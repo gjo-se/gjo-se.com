@@ -20,8 +20,28 @@ feature/A   feature/B     feature/C     (zurück aus release)
 
 ## Workflow
 ```bash
-git checkout develop          # 1. Branch wechseln
-git pull                      # 2. Remote-Stand holen
-git branch -d feature/X       # 3. Lokalen Feature-Branch aufräumen
-git flow feature start ISSUE-Y-naechstes-feature  # 4. Neues Feature starten
+# 1. start Feature:
+git flow feature start ISSUE-1307-feature-name
+
+# 2. create Commits
+git status
+git add . | folder/file.py
+git commit -m "Description"
+
+# 3. Remote-Push
+git push -u origin feature/ISSUE-1307-feature-name
+git push
+
+# 4. create PR (sollte ohne --base develop funktionieren => default)
+gh pr create --title "feat: health check" --body "Closes #1307" --base develop
+
+# 5. merge PR
+gh pr merge X --squash --delete-branch
+
+# 6. pull dev
+git checkout develop
+git pull
+
+#7. delete local branch
+git branch -d feature/ISSUE-1307-feature-name
 ```
