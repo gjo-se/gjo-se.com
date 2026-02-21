@@ -122,24 +122,50 @@ Folgende Tools müssen lokal installiert sein:
 
 ## 3. Schritt-für-Schritt-Setup
 
-### 3.1 Repository & GitFlow
+### 3.1 Repository & GitFlow ✅
 
 ```bash
-# 1. Repository klonen / initialisieren
-git clone https://github.com/gjo-se/gjo-se.com.git
-cd gjo-se.com
+# 1. Repository initialisieren (bereits erledigt)
+git init -b main
+git add .
+git commit -m "chore: initial project setup with README"
 
-# 2. GitFlow initialisieren (Defaults bestätigen: main / develop)
-git flow init
+# 2. GitFlow initialisieren mit Defaults (-d = alle Defaults bestätigen)
+git flow init -d
+# → Erstellt: main (production) + develop (integration)
+# → Branch-Prefixes: feature/ release/ hotfix/ support/
 
-# 3. develop-Branch pushen
+# 3. Remote hinzufügen und develop pushen
+git remote add origin https://github.com/gjo-se/gjo-se.com.git
+git push -u origin main
 git push -u origin develop
 ```
 
-**GitHub konfigurieren:**
-- `main` und `develop` als Protected Branches setzen
-- Branch-Protection-Rules: *Require PR + CI-Grün + 1 Approval*
-- GitHub Project erstellen: Columns `Backlog → In Progress → Review → Done`
+> **Status (21.02.2026):**
+> - ✅ `git init` + initialer Commit auf `main`
+> - ✅ `git flow init -d` → `main` + `develop` lokal angelegt
+> - ✅ `.gitignore` erstellt und committet
+> - ⏳ GitHub Remote + Push → manuell erledigen (siehe unten)
+
+**GitHub Repository anlegen (manuell):**
+1. [github.com/new](https://github.com/new) → Repository `gjo-se.com` unter Organisation `gjo-se` anlegen (Private, kein README/gitignore vorauswählen)
+2. Remote setzen & pushen:
+   ```bash
+   git remote add origin https://github.com/gjo-se/gjo-se.com.git
+   git push -u origin main
+   git push -u origin develop
+   ```
+
+**GitHub Branch-Protection konfigurieren:**
+- `main` und `develop` → Settings → Branches → Add rule
+  - ☑ Require a pull request before merging
+  - ☑ Require status checks to pass (CI-Workflow)
+  - ☑ Require 1 approving review
+  - ☑ Do not allow bypassing the above settings
+
+**GitHub Project anlegen:**
+- [github.com/orgs/gjo-se/projects/new](https://github.com/orgs/gjo-se/projects/new) → Board-View
+- Columns: `Backlog → In Progress → In Review → Done`
 
 ---
 
