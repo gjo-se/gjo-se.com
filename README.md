@@ -148,12 +148,13 @@ git push -u origin develop
 > - ✅ GitHub Repo [gjo-se/gjo-se.com](https://github.com/gjo-se/gjo-se.com) angelegt (privat)
 > - ✅ `main` + `develop` nach GitHub gepusht
 
-**GitHub Branch-Protection konfigurieren:**
+**GitHub Branch-Protection konfigurieren:** ✅
 - `main` und `develop` → Settings → Branches → Add rule
-  - ☑ Require a pull request before merging
-  - ☑ Require status checks to pass (CI-Workflow)
-  - ☑ Require 1 approving review
-  - ☑ Do not allow bypassing the above settings
+  - ☑ Require a pull request before merging ✅
+  - ☑ Require 1 approving review + dismiss stale reviews ✅
+  - ☑ enforce_admins: gilt auch für Admins ✅
+  - ☑ Force-Push & Branch-Deletion gesperrt ✅
+  - ⏳ Require status checks to pass → wird aktiv sobald CI-Workflow (Schritt 3.7) eingerichtet ist
 
 **GitHub Project anlegen:**
 - [github.com/orgs/gjo-se/projects/new](https://github.com/orgs/gjo-se/projects/new) → Board-View
