@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+dist/
+*.egg-info/
+.eggs/
+*.whl
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# uv
+uv.lock
+
+# Node / Frontend
+node_modules/
+.next/
+out/
+.npm/
+
+# Umgebungsvariablen
+.env
+.env.*
+!.env.example
+
+# Docker
+*.override.yml
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
