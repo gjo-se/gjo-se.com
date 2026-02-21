@@ -167,6 +167,69 @@ gh pr create --title "feat: ..." --body "Closes #1" --base develop
 gh project item-list 1 --owner gjo-se
 ```
 
+## Woher kommt ein Feature-Branch — und wo geht er hin?
+
+```
+main        ←──────────────────────── release/1.0.0 ──┐
+                                                       │
+develop     ←── feature/X gemergt ◄── PR ──┐          │
+                                            │          │
+feature/X   ── aus develop erzeugt ─────────┘          │
+                                                       │
+release/*   ── aus develop erzeugt ────────────────────┘
+```
+
+| Branch | Erzeugt aus | Per PR gemergt in | Wer bekommt den Code |
+|---|---|---|---|
+| `feature/*` | `develop` | `develop` | nur `develop` |
+| `release/*` | `develop` | `main` **+** `develop` | beide |
+| `hotfix/*` | `main` | `main` **+** `develop` | beide |
+
+**Fazit:** `main` bekommt **nie** direkt einen Feature-Branch — immer nur über `release/*` oder `hotfix/*`.
+
+---
+
+## Warum bleibt mein lokales `develop` zurück?
+
+Nach einem PR-Merge auf GitHub ist der Merge **nur remote** passiert.
+Dein lokales `develop` weiß noch nichts davon — du musst es explizit holen.
+
+### Lösung: nach jedem PR-Merge lokal synchronisieren
+
+```bash
+git checkout develop
+git pull
+```
+
+Das ist der einzige Befehl, den du nach jedem Merge brauchst.
+
+### Warum nicht `git pull` ohne Checkout?
+
+`git pull` aktualisiert immer nur den **aktuell ausgecheckten Branch**.
+Wenn du noch auf `feature/X` bist, bleibt `develop` lokal zurück.
+
+### Empfohlener Ablauf nach einem Merge:
+
+```bash
+# 1. Zu develop wechseln
+git checkout develop
+
+# 2. Remote-Stand holen und lokal anwenden
+git pull
+
+# 3. Lokalen Feature-Branch aufräumen (optional)
+git branch -d feature/X
+
+# 4. Neues Feature starten — jetzt auf aktuellem Stand
+git flow feature start ISSUE-Y-naechstes-feature
+```
+
+### In Sourcetree:
+
+1. Im linken Panel `develop` **doppelklicken** (Branch wechseln)
+2. Toolbar: **„Pull"** klicken
+3. `origin/develop` ist jetzt mit lokalem `develop` synchron ✅
+
 ---
 
 > **Tipp:** Labels konsequent verwenden — `feature`, `bug`, `docs`, `chore`, `blocked`.
