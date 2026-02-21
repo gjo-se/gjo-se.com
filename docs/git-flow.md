@@ -38,10 +38,8 @@ gh pr create --title "feat: health check" --body "Closes #1307" --base develop
 # 5. merge PR
 gh pr merge X --squash --delete-branch
 
-# 6. pull dev
+# incl. pull dev & cleanup
 git checkout develop
 git pull
-
-#7. delete local branch
 git branch -d feature/ISSUE-1307-feature-name
 ```
