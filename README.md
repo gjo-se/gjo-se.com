@@ -145,16 +145,8 @@ git push -u origin develop
 > - ✅ `git init` + initialer Commit auf `main`
 > - ✅ `git flow init -d` → `main` + `develop` lokal angelegt
 > - ✅ `.gitignore` erstellt und committet
-> - ⏳ GitHub Remote + Push → manuell erledigen (siehe unten)
-
-**GitHub Repository anlegen (manuell):**
-1. [github.com/new](https://github.com/new) → Repository `gjo-se.com` unter Organisation `gjo-se` anlegen (Private, kein README/gitignore vorauswählen)
-2. Remote setzen & pushen:
-   ```bash
-   git remote add origin https://github.com/gjo-se/gjo-se.com.git
-   git push -u origin main
-   git push -u origin develop
-   ```
+> - ✅ GitHub Repo [gjo-se/gjo-se.com](https://github.com/gjo-se/gjo-se.com) angelegt (privat)
+> - ✅ `main` + `develop` nach GitHub gepusht
 
 **GitHub Branch-Protection konfigurieren:**
 - `main` und `develop` → Settings → Branches → Add rule
