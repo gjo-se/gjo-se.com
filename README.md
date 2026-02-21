@@ -129,22 +129,17 @@ Folgende Tools müssen lokal installiert sein:
 
 ## 3. Schritt-für-Schritt-Setup
 
-### 3.1 Repository & GitFlow ✅
+### 3.1 Repository & GitFlow
 
 ```bash
-# 1. Repository initialisieren (bereits erledigt)
-git init -b main
-git add .
-git commit -m "chore: initial project setup with README"
+# 1. Repository klonen / initialisieren
+git clone https://github.com/gjo-se/gjo-se.com.git
+cd gjo-se.com
 
-# 2. GitFlow initialisieren mit Defaults (-d = alle Defaults bestätigen)
-git flow init -d
-# → Erstellt: main (production) + develop (integration)
-# → Branch-Prefixes: feature/ release/ hotfix/ support/
+# 2. GitFlow initialisieren (Defaults bestätigen: main / develop)
+git flow init
 
-# 3. Remote hinzufügen und develop pushen
-git remote add origin https://github.com/gjo-se/gjo-se.com.git
-git push -u origin main
+# 3. develop-Branch pushen
 git push -u origin develop
 ```
 
