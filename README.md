@@ -27,6 +27,7 @@
 |---|---|
 | [docs/pr-workflow.md](docs/pr-workflow.md) | PR-Workflow: Feature-Branch → Review → Merge, Schritt für Schritt |
 | [docs/sourcetree-setup.md](docs/sourcetree-setup.md) | Sourcetree: Remote einbinden, GitFlow-Integration, täglicher Workflow |
+| [docs/github-projects.md](docs/github-projects.md) | GitHub Projects: Board einrichten, Issues, Automationen, täglicher Workflow |
 ---
 
 ## 1. Projektstruktur
@@ -165,6 +166,8 @@ git push -u origin develop
 **GitHub Project anlegen:**
 - [github.com/orgs/gjo-se/projects/new](https://github.com/orgs/gjo-se/projects/new) → Board-View
 - Columns: `Backlog → In Progress → In Review → Done`
+
+📖 **Detaillierte Einweisung:** [docs/github-projects.md](docs/github-projects.md)
 
 📖 **Detaillierter PR-Workflow:** [docs/pr-workflow.md](docs/pr-workflow.md)
 
