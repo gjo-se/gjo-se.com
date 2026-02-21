@@ -21,6 +21,12 @@
 5. [GitFlow Branch-Strategie](#5-gitflow-branch-strategie)
 6. [Umgebungen (dev / test / prod)](#6-umgebungen-dev--test--prod)
 
+### Weiterführende Dokumentation
+
+| Dokument | Beschreibung |
+|---|---|
+| [docs/pr-workflow.md](docs/pr-workflow.md) | PR-Workflow: Feature-Branch → Review → Merge, Schritt für Schritt |
+
 ---
 
 ## 1. Projektstruktur
@@ -159,6 +165,8 @@ git push -u origin develop
 **GitHub Project anlegen:**
 - [github.com/orgs/gjo-se/projects/new](https://github.com/orgs/gjo-se/projects/new) → Board-View
 - Columns: `Backlog → In Progress → In Review → Done`
+
+📖 **Detaillierter PR-Workflow:** [docs/pr-workflow.md](docs/pr-workflow.md)
 
 ---
 
