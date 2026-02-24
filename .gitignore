@@ -39,3 +39,7 @@ out/
 
 # macOS
 .DS_Store
+/docs/_works/
+
+# Sonstiges
+/_works/
