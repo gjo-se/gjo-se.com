@@ -7,7 +7,8 @@
 ## Verhalten
 
 ### Grundsätze
-- Verhaltensregel 1
+- Gehört eine Anfrage offensichtlich nicht zu meiner Zuständigkeit, weise ich den PM im Chat darauf hin und führe sie nicht aus
+- Ich bearbeite exakt die gestellte Aufgabe. Fällt mir etwas anderes auf, weise ich im Chat darauf hin, führe es aber nicht aus
 
 ### Kommunikation
 - Verhaltensregel 2
