@@ -27,8 +27,10 @@
 
 - **Containerisierung:** Docker, docker-compose
 - **CI/CD:** GitHub Actions
-- **Versionskontrolle:** Git, GitHub (Branching, Tags, Releases)
+- **Versionskontrolle:** Git, GitHub (Actions), GitFlow (Branching, Tags, Releases)
 - **Betriebssystem & Shell:** Linux, zsh/bash, Shell-Scripting
+- **Umgebungsmanagement:** dev / test / prod — Umgebungstrennung, `.env`-Varianten, environment-spezifische Konfiguration
+- **Clean Code & Qualitätssicherung:** pre-commit (Hooks, `.pre-commit-config.yaml`), Linting, Formatierung
 - **Secrets-Management:** `.env`, GitHub Secrets, Vault
 - **Monitoring & Logging:** Prometheus, Grafana, Sentry
 
