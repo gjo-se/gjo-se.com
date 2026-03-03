@@ -93,7 +93,7 @@ gf_dev() {
       diff_summary=$(git diff HEAD -- $changed 2>/dev/null \
         | grep '^+' \
         | grep -v '^+++' \
-        | grep -oiE 'role|runbook|script|workflow|docker|pipeline|deploy|fachwissen|zusammenarbeit|kernaufgaben|monitoring|secrets|ci|cd|alias|shortcut|issue|pr' \
+        | grep -oiE 'role|runbook|script|workflow|docker|pipeline|deploy|fachwissen|zusammenarbeit|kernaufgaben|monitoring|secrets|alias|shortcut|precommit|linting|environment|umgebung' \
         | tr '[:upper:]' '[:lower:]' \
         | sort | uniq -c | sort -rn \
         | awk '{print $2}' \
