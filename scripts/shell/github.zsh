@@ -42,6 +42,10 @@ gfpr() {
 #   pr-title  → gleich wie commit-msg
 #   issue-nr  → optional — aus Branch-Name (42-foo) oder letztem Commit (#42)
 #               wird nichts gefunden: PR ohne "Closes #N"
+#
+# Bestätigung:
+#   Vor der Ausführung wird eine Zusammenfassung angezeigt.
+#   Einmalig Enter drücken → alle Schritte laufen durch.
 # ------------------------------------------------------------
 gf_dev() {
   local branch="$1"
@@ -103,7 +107,6 @@ gf_dev() {
       fi
 
       branch=$(echo "$branch" | cut -c1-50)
-      echo "🔀 Auto-Branch-Name: feature/$branch"
 
       # Commit-Message aus Dateiliste + Diff-Summary ableiten
       if [[ -z "$commit_msg" ]]; then
@@ -114,7 +117,6 @@ gf_dev() {
         else
           commit_msg="feat: update ${file_hint}"
         fi
-        echo "📝 Auto-Commit-Message: $commit_msg"
       fi
     fi
   fi
@@ -125,14 +127,9 @@ gf_dev() {
     if [[ -z "$issue_nr" ]]; then
       issue_nr=$(git log -1 --pretty=%s | grep -oE '#[0-9]+' | tr -d '#' | head -1)
     fi
-    if [[ -n "$issue_nr" ]]; then
-      echo "🔗 Issue-Nr. erkannt: #${issue_nr}"
-    else
-      echo "ℹ️  Kein Issue verknüpft — PR wird ohne 'Closes #N' erstellt."
-    fi
   fi
 
-  # --- Auto-Detect Commit-Message (Fallback falls nicht bereits per Diff gesetzt) ---
+  # --- Auto-Detect Commit-Message (Fallback) ---
   if [[ -z "$commit_msg" ]]; then
     commit_msg="feat: ${branch}"
   fi
@@ -142,6 +139,29 @@ gf_dev() {
     pr_title="$commit_msg"
   fi
 
+  local pr_body=""
+  if [[ -n "$issue_nr" ]]; then
+    pr_body="Closes #${issue_nr}"
+  fi
+
+  # --- Zusammenfassung & einmalige Bestätigung ---
+  echo ""
+  echo "┌─────────────────────────────────────────────┐"
+  echo "│  gf_dev — Zusammenfassung                   │"
+  echo "├─────────────────────────────────────────────┤"
+  printf "│  🔀 Branch  : feature/%-23s│\n" "$branch"
+  printf "│  📝 Commit  : %-29s│\n" "${commit_msg:0:29}"
+  printf "│  🏷️ PR-Titel: %-29s│\n" "${pr_title:0:29}"
+  if [[ -n "$issue_nr" ]]; then
+    printf "│  🔗 Issue   : #%-28s│\n" "$issue_nr"
+  else
+    echo "│  ℹ️  Issue   : kein Issue verknüpft          │"
+  fi
+  printf "│  📁 Files   : %-29s│\n" "${files:0:29}"
+  echo "└─────────────────────────────────────────────┘"
+  echo ""
+  read -r "confirm?▶ Ausführen? [Enter = ja / Ctrl+C = abbrechen] "
+
   # --- Auf Feature-Branch wechseln oder anlegen ---
   local current_branch
   current_branch=$(git branch --show-current)
@@ -149,10 +169,6 @@ gf_dev() {
     git flow feature start "$branch" || return 1
   fi
 
-  local pr_body=""
-  if [[ -n "$issue_nr" ]]; then
-    pr_body="Closes #${issue_nr}"
-  fi
 
   git add "$files" \
     && git commit -m "$commit_msg" \
