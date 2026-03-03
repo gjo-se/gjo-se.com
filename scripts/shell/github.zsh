@@ -25,6 +25,145 @@ gfpr() {
 }
 
 # ------------------------------------------------------------
+# GitFlow Dev Shortcut — feature start + commit + push + PR in einem Schritt
+# ------------------------------------------------------------
+# Vollaufruf:
+#   gf_dev <feature-branch> <commit-msg> <pr-title> <issue-nr> [files]
+#
+# Kurzaufruf (alle Parameter optional — werden aus Git-Kontext abgeleitet):
+#   gf_dev
+#
+# Auto-Detect:
+#   branch    → aktueller Feature-Branch (ohne "feature/"-Prefix)
+#               oder automatisch aus geänderten Dateien generiert:
+#               z.B. docs/roles/dave.md + scripts/shell/github.zsh → "roles-dave-github"
+#   files     → alle geänderten Dateien (default: ".")
+#   commit-msg→ "feat: <branch-name>"
+#   pr-title  → gleich wie commit-msg
+#   issue-nr  → optional — aus Branch-Name (42-foo) oder letztem Commit (#42)
+#               wird nichts gefunden: PR ohne "Closes #N"
+# ------------------------------------------------------------
+gf_dev() {
+  local branch="$1"
+  local commit_msg="$2"
+  local pr_title="$3"
+  local issue_nr="$4"
+  local files="${5:-.}"
+
+  # --- Auto-Detect Branch ---
+  if [[ -z "$branch" ]]; then
+    local current
+    current=$(git branch --show-current)
+
+    if [[ "$current" == feature/* ]]; then
+      # bereits auf Feature-Branch → Name übernehmen
+      branch="${current#feature/}"
+    else
+      # auf develop/main → Branch-Name aus geänderten Dateien ableiten
+      local changed
+      changed=$(git diff --name-only HEAD)
+      if [[ -z "$changed" ]]; then
+        changed=$(git diff --name-only)
+      fi
+
+      if [[ -z "$changed" ]]; then
+        echo "❌ Keine geänderten Dateien gefunden. Branch-Namen bitte angeben."
+        return 1
+      fi
+
+      # Dateinamen (ohne Extension) extrahieren, deduplizieren, zusammensetzen
+      local raw_branch
+      raw_branch=$(echo "$changed" \
+        | xargs -I{} basename {} \
+        | sed 's/\.[^.]*$//' \
+        | tr '[:upper:]' '[:lower:]' \
+        | sed 's/[^a-z0-9]/-/g' \
+        | sort -u \
+        | tr '\n' '-' \
+        | sed 's/-$//' \
+        | cut -c1-40)
+
+      # Inhalt des Diffs auf relevante Schlüsselwörter analysieren
+      local diff_summary
+      diff_summary=$(git diff HEAD -- $changed 2>/dev/null \
+        | grep '^+' \
+        | grep -v '^+++' \
+        | grep -oiE 'feat|fix|refactor|role|runbook|script|workflow|docker|pipeline|deploy|fachwissen|zusammenarbeit|kernaufgaben' \
+        | tr '[:upper:]' '[:lower:]' \
+        | sort | uniq -c | sort -rn \
+        | awk '{print $2}' \
+        | head -3 \
+        | tr '\n' '-' \
+        | sed 's/-$//')
+
+      if [[ -n "$diff_summary" ]]; then
+        branch="${diff_summary}-${raw_branch}"
+      else
+        branch="$raw_branch"
+      fi
+
+      branch=$(echo "$branch" | cut -c1-50)
+      echo "🔀 Auto-Branch-Name: feature/$branch"
+
+      # Commit-Message aus Dateiliste + Diff-Summary ableiten
+      if [[ -z "$commit_msg" ]]; then
+        local file_hint
+        file_hint=$(echo "$changed" | xargs -I{} basename {} | sed 's/\.[^.]*$//' | sort -u | tr '\n' ', ' | sed 's/, $//')
+        if [[ -n "$diff_summary" ]]; then
+          commit_msg="feat: ${diff_summary} (${file_hint})"
+        else
+          commit_msg="feat: update ${file_hint}"
+        fi
+        echo "📝 Auto-Commit-Message: $commit_msg"
+      fi
+    fi
+  fi
+
+  # --- Auto-Detect Issue-Nr (optional) ---
+  if [[ -z "$issue_nr" ]]; then
+    issue_nr=$(echo "$branch" | grep -oE '^[0-9]+|[0-9]+$' | head -1)
+    if [[ -z "$issue_nr" ]]; then
+      issue_nr=$(git log -1 --pretty=%s | grep -oE '#[0-9]+' | tr -d '#' | head -1)
+    fi
+    if [[ -n "$issue_nr" ]]; then
+      echo "🔗 Issue-Nr. erkannt: #${issue_nr}"
+    else
+      echo "ℹ️  Kein Issue verknüpft — PR wird ohne 'Closes #N' erstellt."
+    fi
+  fi
+
+  # --- Auto-Detect Commit-Message (Fallback falls nicht bereits per Diff gesetzt) ---
+  if [[ -z "$commit_msg" ]]; then
+    commit_msg="feat: ${branch}"
+  fi
+
+  # --- Auto-Detect PR-Title ---
+  if [[ -z "$pr_title" ]]; then
+    pr_title="$commit_msg"
+  fi
+
+  # --- Auf Feature-Branch wechseln oder anlegen ---
+  local current_branch
+  current_branch=$(git branch --show-current)
+  if [[ "$current_branch" != "feature/$branch" && "$current_branch" != "$branch" ]]; then
+    git flow feature start "$branch" || return 1
+  fi
+
+  local pr_body=""
+  if [[ -n "$issue_nr" ]]; then
+    pr_body="Closes #${issue_nr}"
+  fi
+
+  git add "$files" \
+    && git commit -m "$commit_msg" \
+    && git push -u origin "feature/$branch" \
+    && gh pr create \
+         --title "$pr_title" \
+         --body "$pr_body" \
+         --base develop
+}
+
+# ------------------------------------------------------------
 # GitHub Issue erstellen (immer über lokale .md-Datei)
 # ------------------------------------------------------------
 # Verwendung:
