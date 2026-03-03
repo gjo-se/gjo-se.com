@@ -83,12 +83,13 @@ gf_dev() {
         | sed 's/-$//' \
         | cut -c1-40)
 
-      # Inhalt des Diffs auf relevante Schlüsselwörter analysieren
+      # Inhalt des Diffs auf domänenspezifische Schlüsselwörter analysieren
+      # (keine Commit-Typen wie feat/fix/refactor — die kommen im Diff selbst vor)
       local diff_summary
       diff_summary=$(git diff HEAD -- $changed 2>/dev/null \
         | grep '^+' \
         | grep -v '^+++' \
-        | grep -oiE 'feat|fix|refactor|role|runbook|script|workflow|docker|pipeline|deploy|fachwissen|zusammenarbeit|kernaufgaben' \
+        | grep -oiE 'role|runbook|script|workflow|docker|pipeline|deploy|fachwissen|zusammenarbeit|kernaufgaben|monitoring|secrets|ci|cd|alias|shortcut|issue|pr' \
         | tr '[:upper:]' '[:lower:]' \
         | sort | uniq -c | sort -rn \
         | awk '{print $2}' \
