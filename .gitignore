@@ -16,7 +16,7 @@ htmlcov/
 coverage.xml
 
 # uv
-uv.lock
+# uv.lock wird bewusst versioniert (reproduzierbare Builds)
 
 # Node / Frontend
 node_modules/

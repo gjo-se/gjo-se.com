@@ -39,16 +39,23 @@ frontend/
 
 ## Phase 2 – Python-Umgebung & `pyproject.toml`
 
-Erstelle [`pyproject.toml`](../../backend/pyproject.toml) im `backend/`-Verzeichnis mit **Poetry** als Package-Manager.
+Initialisiere das Projekt mit **uv** als Package-Manager (SOTA 2026, 10–100× schneller als pip/Poetry, vollständig kompatibel mit `pyproject.toml`):
 
-Kernabhängigkeiten (`[tool.poetry.dependencies]`):
-- `python = "^3.12"`
+```bash
+uv init backend
+cd backend
+uv add "fastapi[standard]" sqlalchemy alembic "pydantic[email]" pydantic-settings aiosqlite asyncpg
+uv add --dev pytest pytest-asyncio httpx ruff black pyright pre-commit
+```
+
+Kernabhängigkeiten (`[project.dependencies]`):
+- `python = ">=3.12"`
 - `fastapi[standard]`, `uvicorn[standard]`
 - `sqlalchemy`, `alembic`
-- `pydantic[email]` (v2)
-- `python-dotenv`
+- `pydantic[email]` (v2), `pydantic-settings` (ersetzt `python-dotenv`)
+- `aiosqlite` (dev/test), `asyncpg` (Produktion)
 
-Dev-Abhängigkeiten (`[tool.poetry.dev-dependencies]`):
+Dev-Abhängigkeiten (`[dependency-groups.dev]`):
 - `pytest`, `pytest-asyncio`, `httpx`
 - `ruff`, `black`, `pyright`
 - `pre-commit`
@@ -69,7 +76,7 @@ Hooks in dieser Reihenfolge:
 1. **`pre-commit-hooks`** – `trailing-whitespace`, `end-of-file-fixer`, `check-yaml`, `check-json`
 2. **`ruff`** – `ruff check --fix` + `ruff format --check`
 3. **`black`** – `black --check`
-4. **`pytest`** – `pytest --tb=short` (nur auf `backend/`-Dateien)
+4. **`pytest`** – `uv run pytest --tb=short` (nur auf `backend/`-Dateien)
 
 ---
 
@@ -138,9 +145,9 @@ Erstelle [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) mit zwei J
 
 **Job `backend-ci`** (trigger: `push` + `pull_request` auf alle Branches):
 1. Checkout + Python 3.12 setup
-2. Poetry installieren + Abhängigkeiten cachen
+2. `uv` installieren + Abhängigkeiten cachen (`uv sync`)
 3. `ruff check backend/` + `black --check backend/`
-4. `pytest backend/tests/ --tb=short --cov=app`
+4. `uv run pytest backend/tests/ --tb=short --cov=app`
 
 **Job `frontend-ci`** (parallel zu `backend-ci`):
 1. Checkout + Node.js 20 setup
@@ -157,7 +164,7 @@ Erstelle zwei Dockerfiles und eine Compose-Datei:
 
 | Datei | Inhalt |
 |---|---|
-| [`backend/Dockerfile`](../../backend/Dockerfile) | Multi-stage: `builder`-Stage installiert Poetry-Deps; `runtime`-Stage nur mit `venv` – kein Poetry in Produktion |
+| [`backend/Dockerfile`](../../backend/Dockerfile) | Multi-stage: `builder`-Stage installiert Dependencies via `uv sync`; `runtime`-Stage nur mit `venv` – kein uv in Produktion |
 | [`frontend/Dockerfile`](../../frontend/Dockerfile) | `node:20-alpine` für Build, `nginx:alpine` für statisches Serving |
 | [`docker-compose.yml`](../../docker-compose.yml) | Services: `backend` (Port 8000), `frontend` (Port 3000), `db` (PostgreSQL 16) mit Volume; `.env`-Datei wird gemountet |
 | [`docker-compose.override.yml`](../../docker-compose.override.yml) | Dev-Overrides: `volumes`-Mount für Hot-Reload, SQLite statt Postgres |
@@ -180,5 +187,5 @@ Erweitere [`README.md`](../../README.md) um folgende Abschnitte:
 ## Offene Entscheidungen
 
 1. **Async vs. Sync SQLAlchemy:** Der Plan nutzt `AsyncSession` + `aiosqlite`/`asyncpg`. Falls du synchrones SQLAlchemy bevorzugst (einfacher Einstieg), wäre Phase 5 anzupassen – `AsyncEngine` entfällt, `get_db` wird einfacher.
-2. **uv vs. Poetry vs. pip:** ✅ **Entschieden: uv** – SOTA 2026, 10–100× schneller, vollständig kompatibel mit `pyproject.toml`. Details: `docs/research/fastapi-research.md`.
+2. **Package-Manager:** ✅ **Entschieden: uv** – SOTA 2026, 10–100× schneller als pip/Poetry, vollständig kompatibel mit `pyproject.toml`. Details: `docs/research/fastapi-research.md`.
 3. **Feature-Branch-Strategie:** Der Plan kann als ein großer `feature/project-scaffold`-Branch umgesetzt werden, oder jede Phase bekommt einen eigenen Branch (sauberer History, mehr PR-Overhead).
