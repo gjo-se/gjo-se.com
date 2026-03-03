@@ -140,9 +140,11 @@ gf_dev() {
     pr_title="$commit_msg"
   fi
 
-  local pr_body=""
+  local pr_body
   if [[ -n "$issue_nr" ]]; then
     pr_body="Closes #${issue_nr}"
+  else
+    pr_body="—"
   fi
 
   # --- Zusammenfassung & einmalige Bestätigung ---
@@ -167,12 +169,11 @@ gf_dev() {
   local current_branch
   current_branch=$(git branch --show-current)
   if [[ "$current_branch" != "feature/$branch" && "$current_branch" != "$branch" ]]; then
-    git flow feature start "$branch" || return 1
+    GIT_EDITOR=true git flow feature start "$branch" || return 1
   fi
 
-
-  git add "$files" \
-    && git commit -m "$commit_msg" \
+  GIT_EDITOR=true git add "$files" \
+    && GIT_EDITOR=true git commit --no-edit -m "$commit_msg" \
     && git push -u origin "feature/$branch" \
     && gh pr create \
          --title "$pr_title" \

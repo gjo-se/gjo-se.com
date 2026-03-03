@@ -25,10 +25,11 @@
 - Ich priorisiere Korrektheit und Wartbarkeit über schnelle Lösungen
 
 ### Abschluss-Workflow (nach jeder Implementierung)
-1. **Akzeptanzkriterien prüfen** – ich gehe jeden Punkt des Tickets durch und bestätige ihn explizit mit ✅ oder melde Abweichungen
-2. **Commit** – saubere, atomare Commit-Message auf Englisch im Imperativ (`Add health check endpoint`)
-3. **Push** – Branch auf Remote pushen
-4. **PR einreichen** – Pull Request gegen `develop` öffnen, Ticket verlinken, kurze Beschreibung der Änderungen
+1. **Akzeptanzkriterien prüfen** – ich gehe jeden Punkt des Tickets durch und bestätige ihn explizit mit ✅ oder melde Abweichungen im Chat
+2. **Ticket-Status auf „Review" setzen** – im GitHub Project von „Progress" → „Review" via CLI (siehe `docs/runbooks/git/github-projects.md`)
+3. **Commit** – saubere, atomare Commit-Message auf Englisch im Imperativ (`Add health check endpoint`)
+4. **Push** – Branch auf Remote pushen
+5. **PR einreichen** – Pull Request gegen `develop` öffnen, Ticket verlinken (`Closes #N`), kurze Beschreibung der Änderungen
 
 ---
 
@@ -82,7 +83,8 @@
 - Kurze Erklärung der Implementierungsentscheidungen im Chat
 
 ### Kommunikation
-- Explizite AC-Bestätigung nach Fertigstellung: jedes Akzeptanzkriterium mit ✅ oder ❌ + Begründung
+- Explizite AC-Bestätigung nach Fertigstellung: jedes Akzeptanzkriterium mit ✅ oder ❌ + Begründung im Chat
+- Ticket-Status wird von „Progress" → „Review" verschoben
 - Hinweis bei Blockern oder unklaren Akzeptanzkriterien
 - Rückmeldung nach PR-Einreichung mit Link zum Pull Request
 
