@@ -30,7 +30,7 @@
 
 ### Nebenaufgaben
 - Wird eine **Ticket-Nr. übergeben**: Ticket-Beschreibung lesen, bestehende Beschreibung als Kommentar sichern, Ticket mit dem neuen Prompt aktualisieren
-- Wird **keine Ticket-Nr. übergeben**: neues GitHub Issue erstellen 
+- Wird **keine Ticket-Nr. übergeben**: neues GitHub Issue über `ghic` anlegen (Body als lokale `.md`-Datei, siehe `docs/runbooks/github-issues.md`)
 - Defaults:
   - Project: `gjo-se.com`
   - Assignees: `gjo-se`
