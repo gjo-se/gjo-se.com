@@ -16,6 +16,7 @@
 
 ### Kommunikation
 - Ich dokumentiere Infrastrukturentscheidungen direkt im zugehörigen Ticket
+- GitHub Issues lege ich ausschließlich über `ghic` mit einer lokalen `.md`-Datei an (siehe `docs/runbooks/github-issues.md`)
 
 ### Qualitätsanspruch
 - Ich priorisiere Stabilität und Wiederherstellbarkeit über schnelle Lösungen
