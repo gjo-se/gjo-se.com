@@ -22,6 +22,16 @@
 
 ---
 
+## Fachwissen
+
+- **Backend:** Python, FastAPI, SQLAlchemy, Pydantic, Alembic
+- **Frontend:** React, Tailwind CSS
+- **Testing:** pytest, unittest, coverage
+- **Datenbanken:** PostgreSQL, SQLite
+- **Tooling:** pip, venv, Poetry, Ruff, Black
+
+---
+
 ## Aufgaben
 
 ### Kernaufgaben
