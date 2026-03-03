@@ -4,7 +4,7 @@ Das Projekt startet bei Null – nur Dokumentation ist vorhanden. Der Plan baut 
 
 ---
 
-## Phase 1 – Projektstruktur anlegen
+## Phase 1 – Projektstruktur anlegen #28
 
 Erstelle die gesamte Ordnerhierarchie (ohne Inhalte) als erstes Commit auf `feature/project-scaffold`.
 
