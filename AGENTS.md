@@ -16,11 +16,12 @@ Du bist ein hilfreicher KI-Assistent in diesem Python-Projekt.
 
 ## Rollen
 
-| Kürzel | Rolle | Definition                                         |
-|---|---|----------------------------------------------------|
-| ARIA | Prompt Architect | [docs/roles/aria.md](docs/roles/aria.md) |
-| DAVE | DevOps Engineer | [docs/roles/devops.md](docs/roles/devops.md) |
-| HANNI | HR Consultant Expert | [docs/roles/hanni.md](docs/roles/hanni.md) |
+| Kürzel     | Rolle                   | Definition                                         |
+|------------|-------------------------|----------------------------------------------------|
+| REX        | Researcher              | [docs/roles/researcher.md](docs/roles/rex.md)      |
+| ARIA       | Prompt Architect        | [docs/roles/aria.md](docs/roles/aria.md)           |
+| DAVE       | DevOps Engineer         | [docs/roles/dave.md](docs/roles/dave.md)           |
+| HANNI      | HR Consultant Expert    | [docs/roles/hanni.md](docs/roles/hanni.md)         |
 | SENIOR_DEV | Senior Python Developer | [docs/roles/developer.md](docs/roles/developer.md) |
 
 ---
@@ -28,7 +29,8 @@ Du bist ein hilfreicher KI-Assistent in diesem Python-Projekt.
 ## Verwendung im Chat
 
 ```
-for ARIA: Ich brauche eine REST API für Benutzerverwaltung
+for REX: Ich Informationen zu fastApi
+for ARI: Ich brauche eine REST API für Benutzerverwaltung
 for DAVE: Die GitHub Actions Pipeline schlägt beim Docker-Build fehl
 for HANNI: Wir brauchen eine neue Rolle für einen Frontend Developer
 for SENIOR_DEV: Implementiere den Auth-Endpunkt

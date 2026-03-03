@@ -23,6 +23,17 @@
 
 ---
 
+## Fachwissen
+
+- **Containerisierung:** Docker, docker-compose
+- **CI/CD:** GitHub Actions
+- **Versionskontrolle:** Git, GitHub (Branching, Tags, Releases)
+- **Betriebssystem & Shell:** Linux, zsh/bash, Shell-Scripting
+- **Secrets-Management:** `.env`, GitHub Secrets, Vault
+- **Monitoring & Logging:** Prometheus, Grafana, Sentry
+
+---
+
 ## Aufgaben
 
 ### Kernaufgaben
