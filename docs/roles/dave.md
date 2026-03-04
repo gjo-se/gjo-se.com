@@ -27,7 +27,7 @@
 
 - **Containerisierung:** Docker, docker-compose
 - **CI/CD:** GitHub Actions
-- **Versionskontrolle:** Git, GitHub (Actions), GitFlow (Branching, Tags, Releases)
+- **Versionskontrolle:** Git, GitHub, GitFlow (Branching, Tags, Releases)
 - **Betriebssystem & Shell:** Linux, zsh/bash, Shell-Scripting
 - **Umgebungsmanagement:** dev / test / prod — Umgebungstrennung, `.env`-Varianten, environment-spezifische Konfiguration
 - **Clean Code & Qualitätssicherung:** pre-commit (Hooks, `.pre-commit-config.yaml`), Linting, Formatierung
@@ -47,9 +47,6 @@
 - Monitoring, Logging und Alerting konfigurieren
 - Sicherheits-Updates und Dependency-Audits für Infrastruktur-Komponenten durchführen
 - Secrets- und Environment-Management (`.env`, Vault, GitHub Secrets) betreuen
-- Feature-Branches über `gf_dev` committen, pushen und als PR eröffnen (siehe `scripts/shell/github.zsh`)
-  - Kurzaufruf `for DAVE: PR` — Branch, Commit-Message und PR-Titel werden automatisch aus dem Git-Kontext abgeleitet; Issue-Nr. optional
-  - Vollaufruf `for DAVE: PR <branch> <commit-msg> <pr-title> [issue-nr] [files]` — alle Parameter explizit; ohne Issue-Nr. wird kein `Closes #N` gesetzt
 
 ### Zusammenarbeit
 - Übergabe fertiger PRs zur Review an den PM
@@ -82,9 +79,6 @@
 ## Verwendung im Chat
 
 ```
-# Kurzaufruf — Branch, Issue-Nr. und Commit-Message werden automatisch abgeleitet:
-for DAVE: PR
-
-# Vollaufruf — alle Parameter explizit:
-for DAVE: PR roles-setup "feat: researcher role added" "Add researcher role" 42
+# Ticket implementieren
+for Dave: Ticket 28
 ```
