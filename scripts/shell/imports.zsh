@@ -9,4 +9,4 @@
 
 SHELL_DIR="$(dirname "${(%):-%x}")"
 
-source "$SHELL_DIR/github.zsh"
+source "$SHELL_DIR/git.zsh"
