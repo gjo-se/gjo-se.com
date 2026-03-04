@@ -1,170 +1,114 @@
-# Crew-Workflow
+# Crew-Workflow — gjo-se.com
 
-hier sollte der gesamte Workflow erfasst werden
-welcheRolle hat wann welche Aufgabe
-
-
-Tabelle
-
-wer | was
-
-PM: create Task EPIC
-
-grobe Beschreibung, was ich möchte
-
-Recherche ausführen
-
-Rex: Plan
-
-als .md speichern, und Task Description manuell ersetzen
-
-Tickets anlegen
-
-Ari: erarbeitet darus sub-Tasks
-
-# PR Review & Merge — Schritt für Schritt
-
-> Dieser Leitfaden erklärt den kompletten Pull-Request-Workflow für das Projekt `gjo-se.com`.
-> Branch-Protection ist für `main` und `develop` aktiv — jede Änderung **muss** über einen PR laufen.
+> Dieser Leitfaden beschreibt den **vollständigen, redundanzfreien Workflow** vom ersten Impuls bis zum fertigen Feature auf `develop`.
+> Jede Rolle hat genau eine Verantwortlichkeit – kein Artefakt existiert doppelt.
+> **Goldene Regel:** Alle Artefakte leben final **nur in GitHub Issues** – lokale `.md`-Dateien sind temporäre Arbeitsdokumente und werden nach Übertragung ins Issue gelöscht.
 
 ---
 
-## Warum nicht direkt auf `develop` oder `main` pushen?
+## Überblick: Wer macht was?
 
-Branch-Protection erzwingt den PR-Workflow:
-
-| Aktion | Erlaubt |
-|---|---|
-| Direkter `git push origin develop` | ❌ geblockt |
-| Direkter `git push origin main` | ❌ geblockt |
-| Feature-Branch pushen + PR öffnen | ✅ einziger Weg |
-| Force-Push / Branch löschen | ❌ geblockt |
-| PR selbst mergen (kein zweiter Reviewer nötig) | ✅ erlaubt (Weg B) |
-
----
-
-## Schritt 1 — Feature-Branch erstellen
-
-```bash
-# GitFlow-Weg (empfohlen)
-git flow feature start ISSUE-123-mein-feature
-
-# Alternativ manuell
-git checkout develop
-git checkout -b feature/ISSUE-123-mein-feature
+```
+PIA/PM: Rohidee
+        │  → GitHub Issue anlegen (Label: idea)
+        │
+        │  for REX: Issue #<nr> recherchieren + Plan erstellen
+        ▼
+REX: Research
+        │  → Research-/Plan-Dokument erstellen (temporär im Repo)
+        │  → auf Aufforderung: Idea-Issue zum Epic ausbauen
+        │  → lokales Research-Dokument löschen
+        │
+        │  for ARI: #<epic-issue-nr> Prompts/Sub-Issues erstellen
+        ▼
+ARI: Prompts + Sub-Issues
+        │  → Prompt-Dokumente für Sub-Tasks erstellen (temporär im Repo)
+        │  → auf Aufforderung: Sub-Issues anlegen und mit Epic verknüpfen
+        │  → lokale Prompt-Dokumente löschen
+        │
+        │  for SAM: ticket <issue-nr> umsetzen
+        ▼
+SAM: Implementierung
+        │  → Feature-Branch und Implementierung zum Issue
+        │  → PR gegen develop
+        │
+        │  (optional) for HANNI: ticket <issue-nr> testen
+        ▼
+HANNI: QA / Testing
+           → Test-Cases, Review, Feedback
 ```
 
 ---
 
-## Schritt 2 — Entwickeln & committen
+## Artefakt-Lifecycle: Was entsteht wann, wo und wie lange?
 
-```bash
-# Änderungen vornehmen, dann:
-git add .
-git commit -m "feat: kurze Beschreibung der Änderung"
-```
+| Artefakt | Erstellt von | Ablage (temporär) | Finale Ablage | Wann löschen |
+|---|---|---|---|---|
+| Rohidee | PIA / PM | — | ✅ GitHub Issue `idea` | nie (bleibt als Issue) |
+| Research / Plan | REX | `docs/epics/<thema>/plan.md` | ✅ GitHub Issue `epic` (überschreibt `idea`) | nach Übertragung ins Issue |
+| Prompts / Sub-Tasks | ARI | `docs/epics/<thema>/prompt-01.md` etc. | ✅ GitHub Issues `feature` | nach Übertragung in Issues |
+| Runbooks / Guides | — | — | ✅ `docs/runbooks/` | nie |
+| Rollendefinitionen | — | — | ✅ `docs/roles/` | nie |
 
-**Commit-Message-Konventionen:**
-
-| Prefix | Wann |
-|---|---|
-| `feat:` | Neues Feature |
-| `fix:` | Bugfix |
-| `docs:` | Nur Dokumentation |
-| `chore:` | Build, Tooling, Konfiguration |
-| `refactor:` | Code-Umstrukturierung ohne Funktionsänderung |
-| `test:` | Tests hinzugefügt oder angepasst |
+> **Zweck der lokalen `.md`:** Kontrollmöglichkeit vor Übertragung – Review, Anpassung, Versionierung im Feature-Branch.
+> **Nach Übertragung:** `git rm` + committen → Repo bleibt schlank, Issues sind Single Source of Truth.
 
 ---
 
-## Schritt 3 — Branch pushen & PR öffnen
+## Schritt 1 — PIA/PM: Rohidee als GitHub Issue anlegen
 
-```bash
-# Branch pushen
-git push -u origin feature/ISSUE-123-mein-feature
+PIA/PM wandelt eine Rohidee in ein GitHub Issue mit Label `idea` um und legt damit den initialen Backlog-Eintrag an.
 
-# PR per GitHub CLI öffnen
-gh pr create \
-  --title "feat: kurze Beschreibung" \
-  --body "Beschreibung der Änderung, Bezug zu Issue #123" \
-  --base develop
-```
-
-Oder direkt im Browser:
-👉 GitHub zeigt nach dem Push automatisch einen „Compare & pull request"-Button
+**Ergebnis:** Ein `idea`-Issue (#X) existiert im Backlog und ist Ausgangspunkt für weitere Schritte.
 
 ---
 
-## Schritt 4 — PR reviewen (im Browser)
+## Schritt 2 — REX: Research + Plan erstellen
 
-1. **[github.com/gjo-se/gjo-se.com/pulls](https://github.com/gjo-se/gjo-se.com/pulls)** öffnen
-2. Den PR anklicken
-3. Tab **„Files changed"** → alle Änderungen prüfen
-4. Button **„Review changes"** (oben rechts)
-   - ● **Approve** wählen
-   - Optional: Kommentar z.B. `LGTM` (Looks Good To Me)
-   - **„Submit review"** klicken
+Auf Basis des `idea`-Issues erstellt REX ein Research-/Plan-Dokument, das den späteren Epic-Inhalt definiert.
 
----
+Auf Aufforderung durch PIA/PM:
+- Überführt REX den Research/Plan in das ursprüngliche Idea-Issue (dies wird zum `epic`)
+- passt Labels und Beschreibung des Issues an
+- entfernt das lokale Research-Dokument aus dem Repo
 
-## Schritt 5 — PR mergen
-
-1. Button **„Merge pull request"** klicken
-2. Merge-Strategie wählen:
-
-| Strategie | Wann verwenden |
-|---|---|
-| **Squash and merge** ✅ | Standard — fasst alle Commits zu einem zusammen, hält History sauber |
-| Merge commit | Wenn die einzelnen Commits erhalten bleiben sollen |
-| Rebase and merge | Für linearen Commit-Verlauf ohne Merge-Commit |
-
-3. Commit-Message prüfen / anpassen
-4. **„Confirm squash and merge"** klicken
+**Ergebnis:** Das ursprüngliche `idea`-Issue ist jetzt ein vollständig beschriebenes `epic`-Issue.
 
 ---
 
-## Schritt 6 — Aufräumen
+## Schritt 3 — ARI: Prompts und Sub-Issues erstellen
 
-```bash
-# Nach dem Merge: lokalen Branch löschen und develop aktualisieren
-git checkout develop
-git pull
-git branch -d feature/ISSUE-123-mein-feature
+Ausgehend vom `epic`-Issue erstellt ARI strukturierte Prompts für alle benötigten Sub-Tasks als temporäre Prompt-Dokumente.
 
-# Remote-Branch wurde durch GitHub automatisch gelöscht (falls so konfiguriert)
-# Alternativ manuell:
-git push origin --delete feature/ISSUE-123-mein-feature
-```
+Auf Aufforderung durch PIA/PM:
+- legt ARI zu jedem Prompt passende Sub-Issues (`feature`) an
+- verknüpft diese Sub-Issues klar mit dem zugrunde liegenden `epic`
+- entfernt die lokalen Prompt-Dokumente aus dem Repo
+
+**Ergebnis:** Für das Epic existiert eine Menge klar definierter `feature`-Issues als Sub-Issues.
 
 ---
 
-## Kompletter Workflow auf einen Blick
+## Schritt 4 — SAM: Implementierung
 
-```
-develop
-  │
-  ├── git flow feature start ISSUE-123-mein-feature
-  │         │
-  │         ├── entwickeln & committen
-  │         ├── git push -u origin feature/...
-  │         └── gh pr create --base develop
-  │                   │
-  │                   ├── Review in GitHub
-  │                   └── Squash and merge → develop
-  │
-  └── git pull (develop aktualisiert)
-```
+SAM setzt die einzelnen `feature`-Issues um.
+
+Für jedes ausgewählte Feature-Issue:
+- erstellt SAM die notwendige Implementierung (Code + Tests)
+- arbeitet in einem dedizierten Feature-Branch
+- liefert einen PR gegen `develop`
+
+**Ergebnis:** Der Code zum Feature ist implementiert, getestet und als PR gegen `develop` vorbereitet oder gemerged.
 
 ---
 
-## Häufige Fehler
+## Schritt 5 — HANNI: QA / Testing
 
-| Fehler | Ursache | Lösung |
-|---|---|---|
-| `protected branch hook declined` | Direkter Push auf `develop`/`main` | Feature-Branch verwenden + PR öffnen |
-| `fatal: 'origin' does not appear to be a git repository` | Remote nicht gesetzt | `git remote add origin <url>` |
-| PR kann nicht gemergt werden | CI-Checks schlagen fehl | Fehler lokal beheben, committen, pushen |
+(Optional, je nach Bedarf und Ticket-Vereinbarung.)
 
----
+HANNI übernimmt QA/Testing für ausgewählte `feature`-Issues:
+- definiert und dokumentiert Test-Cases
+- testet das Verhalten gegen die Akzeptanzkriterien
+- gibt Feedback bzw. Abnahme zurück ins Issue
 
-> **Tipp:** Mit `gh pr status` siehst du jederzeit den Status aller deiner offenen PRs im Terminal.
+**Ergebnis:** Das Feature ist aus QA-Sicht geprüft; Status/Ergebnis ist im zugehörigen Issue dokumentiert.

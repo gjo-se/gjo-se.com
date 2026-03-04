@@ -11,7 +11,35 @@
 # Schnell-Shortcut für CLI & Roles: Sam & Co
 # ------------------------------------------------------------
 
-gf_task() {
+# ------------------------------------------------------------
+# PM: Rohidee als GitHub Issue anlegen (Label: idea)
+# ------------------------------------------------------------
+# Verwendung:
+#   gf_idea "<titel>" ["<beschreibung>"]
+#
+# Beispiel:
+#   gf_idea "Dark Mode für Dashboard"
+#   gf_idea "Dark Mode für Dashboard" "Nutzer wünschen sich einen Dark Mode für das Dashboard."
+# ------------------------------------------------------------
+gf_idea() {
+  local title="$1"
+  local body="${2:-}"
+
+  if [[ -z "$title" ]]; then
+    echo "Verwendung: gf_idea \"<titel>\" [\"<beschreibung>\"]"
+    echo "Beispiel:   gf_idea \"Dark Mode für Dashboard\""
+    return 1
+  fi
+
+  gh issue create \
+    --title "$title" \
+    --body "$body" \
+    --label "idea" \
+    --project "gjo-se.com" \
+    --assignee "gjo-se"
+}
+
+gf_task(){
   local issue="$1"
   local msg="${2:-ISSUE-${1}}"
   local files="${3:-.}"
