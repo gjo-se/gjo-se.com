@@ -26,16 +26,55 @@ gf_task() {
   git flow feature start "$branch" \
     && git add "$files" \
     && git commit -m "$msg" \
-    && git push -u origin "feature/${branch}" \
+    && git push -u origin "feature/${branch}" --force-with-lease \
     && gh pr create \
          --title "$msg" \
+         --body "Closes #${issue}" \
          --base develop
 }
 
+# ------------------------------------------------------------
+# Einmalig alle bereits gemergten Feature-Branches aufräumen
+# ------------------------------------------------------------
+# Was passiert:
+#   1. Wechsel auf develop + pull
+#   2. Alle lokalen Branches die in develop enthalten sind → löschen
+#   3. Veraltete Remote-Tracking-Referenzen entfernen
+# ------------------------------------------------------------
+gf_cleanup() {
+  echo "🔍 Wechsle auf develop..."
+  git checkout develop && git pull || return 1
+
+  echo ""
+  echo "🗑️  Folgende Branches werden gelöscht (bereits in develop enthalten):"
+  git branch --merged develop | grep -v '^\*\|main\|develop'
+
+  echo ""
+  read -r "confirm?▶ Löschen? [Enter = ja / Ctrl+C = abbrechen] "
+
+  git branch --merged develop \
+    | grep -v '^\*\|main\|develop' \
+    | xargs -r git branch -d
+
+  echo ""
+  echo "🧹 Remote-Tracking-Referenzen aufräumen..."
+  git remote prune origin
+
+  echo ""
+  echo "✅ Fertig — alle gemergten Branches entfernt."
+}
+
 gf_merge() {
-  gh pr merge "$1" --squash --delete-branch \
+  local pr="$1"
+  local branch
+
+  branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName')
+
+  gh pr merge "$pr" --squash --delete-branch \
     && git checkout develop \
-    && git pull
+    && git pull \
+    && git branch -d "$branch" 2>/dev/null \
+    && git remote prune origin
 }
 
 # ------------------------------------------------------------
