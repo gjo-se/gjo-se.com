@@ -16,22 +16,24 @@ Du bist ein hilfreicher KI-Assistent in diesem Python-Projekt.
 
 ## Rollen
 
-| Kürzel | Rolle                         | Definition                                    |
-|--------|-------------------------------|-----------------------------------------------|
-| REX    | Researcher                    | [docs/roles/researcher.md](docs/roles/rex.md) |
-| ARIA   | Prompt Architect              | [docs/roles/aria.md](docs/roles/aria.md)      |
-| DAVE   | DevOps Engineer               | [docs/roles/dave.md](docs/roles/dave.md)      |
-| HANNI  | HR Consultant Expert          | [docs/roles/hanni.md](docs/roles/hanni.md)    |
-| SAM    | Senior Python/React Developer | [docs/roles/sam.md](docs/roles/sam.md)        |
+| Kürzel | Rolle                                      | Definition                                 |
+|--------|--------------------------------------------|--------------------------------------------|
+| REX    | Researcher                                 | [docs/roles/rex.md](docs/roles/rex.md)     |
+| ARIA   | Prompt Architect                           | [docs/roles/ari.md](docs/roles/ari.md)     |
+| DAVE   | DevOps Engineer                            | [docs/roles/dave.md](docs/roles/dave.md)   |
+| HANNI  | HR Consultant Expert                       | [docs/roles/hanni.md](docs/roles/hanni.md) |
+| SAM    | Senior Python/React Developer              | [docs/roles/sam.md](docs/roles/sam.md)     |
+| PIA    | Project & Iteration Architect / PM         | [docs/roles/pia.md](docs/roles/pia.md)      |
 
 ---
 
 ## Verwendung im Chat
 
 ```
-for REX: Ich Informationen zu fastApi
+for REX: Ich brauche Informationen zu FastAPI
 for ARI: Ich brauche eine REST API für Benutzerverwaltung
 for DAVE: Die GitHub Actions Pipeline schlägt beim Docker-Build fehl
 for HANNI: Wir brauchen eine neue Rolle für einen Frontend Developer
 for SAM: Implementiere den Auth-Endpunkt
+for PIA: Priorisiere die offenen Epics und schlage das nächste Feature vor
 ```
