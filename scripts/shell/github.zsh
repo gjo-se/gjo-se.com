@@ -32,15 +32,6 @@ gf_task() {
          --base develop
 }
 
-#gfcp() {
-#  git add "${1:-.}"
-#  git commit -m "$2" && git push -u origin "feature/$3"
-#}
-#
-#gfpr() {
-#  gh pr create --title "$1" --body "Closes #$2" --base develop
-#}
-
 # ------------------------------------------------------------
 # GitFlow Dev Shortcut — feature start + commit + push + PR in einem Schritt
 # ------------------------------------------------------------
