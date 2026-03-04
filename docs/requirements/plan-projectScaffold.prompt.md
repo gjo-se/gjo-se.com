@@ -189,3 +189,4 @@ Erweitere [`README.md`](../../README.md) um folgende Abschnitte:
 1. **Async vs. Sync SQLAlchemy:** Der Plan nutzt `AsyncSession` + `aiosqlite`/`asyncpg`. Falls du synchrones SQLAlchemy bevorzugst (einfacher Einstieg), wäre Phase 5 anzupassen – `AsyncEngine` entfällt, `get_db` wird einfacher.
 2. **Package-Manager:** ✅ **Entschieden: uv** – SOTA 2026, 10–100× schneller als pip/Poetry, vollständig kompatibel mit `pyproject.toml`. Details: `docs/research/fastapi-research.md`.
 3. **Feature-Branch-Strategie:** Der Plan kann als ein großer `feature/project-scaffold`-Branch umgesetzt werden, oder jede Phase bekommt einen eigenen Branch (sauberer History, mehr PR-Overhead).
+4. wie kann ich das in eine Routine bringen um es per **1klick** wiederholbar machen

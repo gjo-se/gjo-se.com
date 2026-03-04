@@ -78,6 +78,83 @@ gf_merge() {
 }
 
 # ------------------------------------------------------------
+# Gezieltes Stashen — interaktive Dateiauswahl via fzf
+# ------------------------------------------------------------
+# Verwendung:
+#   gf_stash <stash-name>
+#
+# Beispiel:
+#   gf_stash "ISSUE-42"
+#
+# Voraussetzung: fzf installiert (brew install fzf)
+# Navigation:    TAB = auswählen, SHIFT+TAB = abwählen, ENTER = bestätigen
+# ------------------------------------------------------------
+gf_stash() {
+  local stash_name="$1"
+
+  if [[ -z "$stash_name" ]]; then
+    echo "Verwendung: gf_stash <stash-name>"
+    echo "Beispiel:   gf_stash \"ISSUE-42\""
+    return 1
+  fi
+
+  if ! command -v fzf &>/dev/null; then
+    echo "❌ fzf nicht installiert. Bitte ausführen: brew install fzf"
+    return 1
+  fi
+
+  # Alle geänderten + neuen Dateien ermitteln
+  local all_files
+  all_files=$(git status --short | awk '{print $NF}')
+
+  if [[ -z "$all_files" ]]; then
+    echo "✅ Keine geänderten Dateien vorhanden."
+    return 0
+  fi
+
+  # Alles stagen damit git diff --cached für Preview funktioniert
+  echo "$all_files" | xargs git add --
+
+  # Interaktive Auswahl via fzf — Preview via git diff --cached
+  local selected
+  selected=$(echo "$all_files" | fzf \
+    --multi \
+    --prompt="📦 Dateien für Stash \"${stash_name}\" auswählen > " \
+    --header="TAB = auswählen  |  SHIFT+TAB = abwählen  |  ENTER = bestätigen  |  ESC = abbrechen" \
+    --preview='git diff --cached -- {}' \
+    --preview-window=right:60%)
+
+  if [[ -z "$selected" ]]; then
+    echo "⚠️  Keine Dateien ausgewählt — alle Dateien werden wieder unstaged."
+    git restore --staged . 2>/dev/null || git reset HEAD .
+    return 0
+  fi
+
+  # Nicht ausgewählte Dateien wieder unstagen
+  local not_selected
+  not_selected=$(comm -23 <(echo "$all_files" | sort) <(echo "$selected" | sort))
+  if [[ -n "$not_selected" ]]; then
+    echo "$not_selected" | xargs git restore --staged -- 2>/dev/null \
+      || echo "$not_selected" | xargs git reset HEAD --
+  fi
+
+  echo ""
+  echo "📦 Folgende Dateien werden gestasht unter \"${stash_name}\":"
+  echo "$selected" | while read -r f; do
+    echo "   • $f"
+  done
+  echo ""
+  read -r "confirm?▶ Stashen? [Enter = ja / Ctrl+C = abbrechen] "
+
+  local files_array
+  files_array=(${(f)selected})
+  git stash push -m "$stash_name" -- "${files_array[@]}"
+
+  # Sicherheitshalber sicherstellen dass nichts ungewollt gestaged bleibt
+  git restore --staged . 2>/dev/null || true
+}
+
+# ------------------------------------------------------------
 # GitFlow Dev Shortcut — feature start + commit + push + PR in einem Schritt
 # ------------------------------------------------------------
 # Vollaufruf:
@@ -89,7 +166,7 @@ gf_merge() {
 # Auto-Detect:
 #   branch    → aktueller Feature-Branch (ohne "feature/"-Prefix)
 #               oder automatisch aus geänderten Dateien generiert:
-#               z.B. docs/roles/dave.md + scripts/shell/github.zsh → "roles-dave-github"
+#               z.B. docs/roles/dave.md + scripts/shell/git.zsh → "roles-dave-git"
 #   files     → alle geänderten Dateien (default: ".")
 #   commit-msg→ "feat: <branch-name>"
 #   pr-title  → gleich wie commit-msg
