@@ -1,4 +1,4 @@
-# GitHub Projects 
+# GitHub Projects
 
 ## Project Columns
 
@@ -23,7 +23,7 @@
 - bug
 - blocked
 
-## Issue sub-issues 
+## Issue sub-issues
 - TODO: ausarbeiten
 
 ## Issue mit Branch verknüpfen
@@ -122,4 +122,3 @@ gh project item-edit \
   --field-id PVTSSF_lAHOAHMTQs4BP8S0zg-NF2I \
   --single-select-option-id aba860b9
 ```
-

@@ -1,0 +1,52 @@
+# =============================================================
+# gjo-se.com — pre-commit Hook Konfiguration
+# =============================================================
+# Aktivieren:       pre-commit install
+# Manueller Lauf:   pre-commit run --all-files
+# Update Hooks:     pre-commit autoupdate
+# =============================================================
+
+repos:
+
+  # -----------------------------------------------------------
+  # 1. Allgemeine Datei-Hygiene
+  # -----------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+
+  # -----------------------------------------------------------
+  # 2. Ruff – Linting + Formatierung
+  # -----------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # -----------------------------------------------------------
+  # 3. Black – Formatierung (Safety Net)
+  # -----------------------------------------------------------
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+
+  # -----------------------------------------------------------
+  # 4. pytest – lokaler Hook (nur bei Änderungen unter backend/)
+  # -----------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        language: system
+        entry: bash -c 'cd backend && uv run pytest tests/ --tb=short -q; code=$?; [ $code -eq 5 ] && exit 0 || exit $code'
+        pass_filenames: false
+        always_run: false
+        files: ^backend/
