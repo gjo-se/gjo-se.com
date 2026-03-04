@@ -70,7 +70,7 @@ Konfigurationsblöcke in `pyproject.toml`:
 
 ## Phase 3 – pre-commit Konfiguration
 
-Erstelle [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml) im Root-Verzeichnis.
+Erstelle [`.pre-commit-config.yaml`](../../../.pre-commit-config.yaml) im Root-Verzeichnis.
 
 Hooks in dieser Reihenfolge:
 1. **`pre-commit-hooks`** – `trailing-whitespace`, `end-of-file-fixer`, `check-yaml`, `check-json`
@@ -175,7 +175,7 @@ Secrets kommen aus `.env` (niemals hardcoded).
 
 ## Phase 10 – README.md erweitern
 
-Erweitere [`README.md`](../../README.md) um folgende Abschnitte:
+Erweitere [`README.md`](../../../README.md) um folgende Abschnitte:
 - **Projektübersicht** – Tech-Stack-Tabelle
 - **Quickstart** – lokales Setup in 5 Schritten (Clone → venv → pre-commit install → `uvicorn` starten → Frontend starten)
 - **Projektstruktur** – annotierter Verzeichnisbaum
