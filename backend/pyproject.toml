@@ -53,4 +53,3 @@ asyncio_mode = "auto"
 [tool.pyright]
 pythonVersion = "3.12"
 strict = true
-

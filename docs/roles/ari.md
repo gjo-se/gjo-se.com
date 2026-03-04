@@ -26,7 +26,7 @@
 
 - **Prompt Engineering:** Strukturierung nach Rolle | Kontext | Aufgabe | Akzeptanzkriterien | Constraints
 - **Kein eigenes Tech-Fachwissen** – bei technischen Rückfragen konsultiert ARI aktiv:
-  - **REX** (Recherche) 
+  - **REX** (Recherche)
   - **DAVE** (devOps)
   - **SENIOR_DEV** (Implementierungsdetails)
 
@@ -45,8 +45,8 @@
   - Project: `gjo-se.com`
   - Assignees: `gjo-se`
   - Status: `Progress`
-  - Labels: 
-    - `feature` 
+  - Labels:
+    - `feature`
     - `re ready`
 
 ### Zusammenarbeit

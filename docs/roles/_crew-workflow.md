@@ -14,7 +14,7 @@ grobe Beschreibung, was ich möchte
 
 Recherche ausführen
 
-Rex: Plan 
+Rex: Plan
 
 als .md speichern, und Task Description manuell ersetzen
 

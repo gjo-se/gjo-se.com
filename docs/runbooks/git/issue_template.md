@@ -6,10 +6,10 @@
 
 ## Aufgabe
 <!-- Konkrete Schritte, nummeriert -->
-1. 
+1.
 
 ## Akzeptanzkriterien
-- [ ] 
+- [ ]
 
 ## Constraints
 <!-- z.B. keine Secrets ins Repo, Doku unter docs/runbooks/ -->
