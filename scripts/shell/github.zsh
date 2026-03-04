@@ -6,23 +6,40 @@
 # ------------------------------------------------------------
 # GitFlow Shortcuts
 # ------------------------------------------------------------
-gff() {
-  git flow feature start "$1"
+
+# ------------------------------------------------------------
+# Schnell-Shortcut für CLI & Roles: Sam & Co
+# ------------------------------------------------------------
+
+gf_task() {
+  local issue="$1"
+  local msg="${2:-ISSUE-${1}}"
+  local files="${3:-.}"
+
+  if [[ -z "$issue" ]]; then
+    echo "Verwendung: gf_task <issue-nr> [commit-msg] [files]"
+    return 1
+  fi
+
+  local branch="ISSUE-${issue}"
+
+  git flow feature start "$branch" \
+    && git add "$files" \
+    && git commit -m "$msg" \
+    && git push -u origin "feature/${branch}" \
+    && gh pr create \
+         --title "$msg" \
+         --base develop
 }
 
-gfc() {
-  git add "${1:-.}"
-  git commit -m "$2"
-}
-
-gfcp() {
-  git add "${1:-.}"
-  git commit -m "$2" && git push -u origin "feature/$3"
-}
-
-gfpr() {
-  gh pr create --title "$1" --body "Closes #$2" --base develop
-}
+#gfcp() {
+#  git add "${1:-.}"
+#  git commit -m "$2" && git push -u origin "feature/$3"
+#}
+#
+#gfpr() {
+#  gh pr create --title "$1" --body "Closes #$2" --base develop
+#}
 
 # ------------------------------------------------------------
 # GitFlow Dev Shortcut — feature start + commit + push + PR in einem Schritt
