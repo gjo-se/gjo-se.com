@@ -1,3 +1,27 @@
+# Crew-Workflow
+
+hier sollte der gesamte Workflow erfasst werden
+welcheRolle hat wann welche Aufgabe
+
+
+Tabelle
+
+wer | was
+
+PM: create Task EPIC
+
+grobe Beschreibung, was ich möchte
+
+Recherche ausführen
+
+Rex: Plan 
+
+als .md speichern, und Task Description manuell ersetzen
+
+Tickets anlegen
+
+Ari: erarbeitet darus sub-Tasks
+
 # PR Review & Merge — Schritt für Schritt
 
 > Dieser Leitfaden erklärt den kompletten Pull-Request-Workflow für das Projekt `gjo-se.com`.
