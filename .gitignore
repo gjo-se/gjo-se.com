@@ -30,7 +30,7 @@ out/
 !.env.example
 
 # Docker
-*.override.yml
+# docker-compose.override.yml wird bewusst versioniert (Dev-Overrides für alle Entwickler)
 
 # IDE
 .idea/
