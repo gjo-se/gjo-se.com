@@ -3,10 +3,16 @@ services:
   backend:
     volumes:
       - ./backend:/app
+      - /app/.venv           # .venv aus dem Image behalten – nicht vom lokalen Mount überschreiben
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
   frontend:
+    build:
+      context: ./frontend
+      target: builder        # builder-Stage nutzen – enthält Node + npm
+    ports:
+      - "5173:5173"          # Vite Dev-Server Port
     volumes:
       - ./frontend:/app
-      - /app/node_modules
-    command: npm run dev -- --host
+      - /app/node_modules    # node_modules aus dem Image behalten
+    command: npm run dev -- --host --port 5173
