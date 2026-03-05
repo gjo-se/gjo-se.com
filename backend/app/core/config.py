@@ -21,7 +21,10 @@ class Settings(BaseSettings):
     APP_NAME: str = Field(default="gjo-se.com", description="Application name")
     DEBUG: bool = Field(default=False, description="Enable debug mode")
     ENVIRONMENT: str = Field(default="dev", description="Deployment environment")
-    DATABASE_URL: str = Field(description="Database connection string")
+    DATABASE_URL: str = Field(
+        default="sqlite+aiosqlite:///:memory:",
+        description="Database connection string",
+    )
     ALLOWED_ORIGINS: list[str] = Field(
         default=["http://localhost:3000"],
         description="Permitted CORS origins",
