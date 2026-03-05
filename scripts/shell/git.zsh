@@ -50,15 +50,30 @@ gf_task(){
   fi
 
   local branch="ISSUE-${issue}"
+  local full_branch="feature/${branch}"
 
-  git flow feature start "$branch" \
-    && git add "$files" \
+  # Branch bereits vorhanden? → direkt wechseln statt neu anlegen
+  if git show-ref --verify --quiet "refs/heads/${full_branch}"; then
+    echo "⚠️  Branch '${full_branch}' existiert bereits – wechsle direkt dorthin."
+    git checkout "$full_branch" || return 1
+  else
+    git flow feature start "$branch" || return 1
+  fi
+
+  git add "$files" \
     && git commit -m "$msg" \
-    && git push -u origin "feature/${branch}" --force-with-lease \
-    && gh pr create \
-         --title "$msg" \
-         --body "Closes #${issue}" \
-         --base develop
+    && git push -u origin "$full_branch" --force-with-lease \
+    && {
+      if gh pr view "$full_branch" --json number &>/dev/null; then
+        echo "ℹ️  PR für '${full_branch}' existiert bereits – kein neuer PR angelegt."
+        gh pr view "$full_branch" --web 2>/dev/null || true
+      else
+        gh pr create \
+          --title "$msg" \
+          --body "Closes #${issue}" \
+          --base develop
+      fi
+    }
 }
 
 # ------------------------------------------------------------
