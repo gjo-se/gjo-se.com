@@ -37,7 +37,7 @@ frontend/
 
 ---
 
-## Phase 2 – Python-Umgebung & `pyproject.toml`
+## Phase 2 – Python-Umgebung & `pyproject.toml` #32
 
 Initialisiere das Projekt mit **uv** als Package-Manager (SOTA 2026, 10–100× schneller als pip/Poetry, vollständig kompatibel mit `pyproject.toml`):
 
@@ -68,7 +68,7 @@ Konfigurationsblöcke in `pyproject.toml`:
 
 ---
 
-## Phase 3 – pre-commit Konfiguration
+## Phase 3 – pre-commit Konfiguration #34
 
 Erstelle [`.pre-commit-config.yaml`](../../../.pre-commit-config.yaml) im Root-Verzeichnis.
 
@@ -80,7 +80,7 @@ Hooks in dieser Reihenfolge:
 
 ---
 
-## Phase 4 – FastAPI Boilerplate
+## Phase 4 – FastAPI Boilerplate #35
 
 Erstelle die folgenden Dateien in `backend/app/`:
 
@@ -95,9 +95,14 @@ Erstelle die folgenden Dateien in `backend/app/`:
 
 ---
 
-## Phase 5 – SQLAlchemy + Alembic Setup
+## Phase 5 – SQLAlchemy + Alembic Setup #49
 
 Erstelle die Datenbankschicht in `backend/app/db/`:
+- Recherce Details unter: docs/epics/project_scaffold/fastapi-research.md 12. Phase 5 – SQLAlchemy + Alembic Setup
+- SQLAlchemy 2.0
+- Alembic
+- DB: SQLite nur für Unit-Tests (in-memory), Postgres für alles andere
+- aiosqlite
 
 | Datei | Inhalt |
 |---|---|
