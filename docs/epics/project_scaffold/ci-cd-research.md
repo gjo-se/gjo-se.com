@@ -60,6 +60,7 @@ Push / PR auf beliebigen Branch
 
 `GitHub → Repository → Settings → Branches → Add rule`
 
+
 Für `develop` **und** `main` jeweils:
 
 | Setting | Wert |
