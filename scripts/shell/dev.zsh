@@ -176,4 +176,29 @@ function start_docker() {
 
   # Migrations automatisch prüfen und einspielen
   run_migrations
+
+  # Frontend-Port dynamisch ermitteln:
+  # - docker-compose.override.yml vorhanden → Vite Dev-Server auf 5173
+  # - nur docker-compose.yml → nginx auf 3000
+  local frontend_port="3000"
+  if [[ -f "$project_dir/docker-compose.override.yml" ]]; then
+    frontend_port="5173"
+  fi
+
+  local fe_url="http://localhost:${frontend_port}"
+  local be_url="http://localhost:8000"
+
+  # Klickbare Links ausgeben
+  echo ""
+  echo "┌──────────────────────────────────────────────────────┐"
+  echo "│  🌐 Services erreichbar:                              │"
+  echo "│                                                      │"
+  printf "│  Frontend  →  \e]8;;%s\e\\%s\e]8;;\e\\%-22s│\n" "$fe_url" "$fe_url" ""
+  printf "│  Backend   →  \e]8;;%s\e\\%s\e]8;;\e\\%-22s│\n" "$be_url" "$be_url" ""
+  printf "│  API Docs  →  \e]8;;%s/docs\e\\%s/docs\e]8;;\e\\%-17s│\n" "$be_url" "$be_url" ""
+  printf "│  ReDoc     →  \e]8;;%s/redoc\e\\%s/redoc\e]8;;\e\\%-16s│\n" "$be_url" "$be_url" ""
+  if [[ "$frontend_port" == "5173" ]]; then
+    printf "│  Showcase  →  \e]8;;%s/dev/atoms\e\\%s/dev/atoms\e]8;;\e\\%-11s│\n" "$fe_url" "$fe_url" ""
+  fi
+  echo "└──────────────────────────────────────────────────────┘"
 }
