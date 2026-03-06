@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import NavLink from '../../molecules/NavLink'
 
 const SHOWCASE_LINKS = [
   { to: '/dev/atoms', label: '⚛️ Atoms' },
@@ -12,7 +13,6 @@ const SHOWCASE_LINKS = [
  * Nur bei import.meta.env.DEV sichtbar – in Production nicht enthalten.
  *
  * @example
- * // In router.tsx (nur wenn import.meta.env.DEV):
  * { element: <DevLayout />, children: [{ path: '/dev/atoms', element: <AtomsShowcase /> }] }
  */
 export default function DevLayout() {
@@ -23,22 +23,9 @@ export default function DevLayout() {
           <span className="text-xs font-semibold uppercase tracking-widest text-yellow-700">
             🛠 Dev Showcase
           </span>
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             {SHOWCASE_LINKS.map(({ to, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  [
-                    'rounded px-3 py-1 text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-yellow-300 text-yellow-900'
-                      : 'text-yellow-700 hover:bg-yellow-100',
-                  ].join(' ')
-                }
-              >
-                {label}
-              </NavLink>
+              <NavLink key={to} to={to} label={label} />
             ))}
           </div>
         </div>

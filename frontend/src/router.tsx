@@ -1,8 +1,9 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 import DefaultLayout from './components/templates/DefaultLayout'
 import AuthLayout from './components/templates/AuthLayout'
 import DevLayout from './components/templates/DevLayout'
+import ProtectedRoute from './components/ProtectedRoute'
 
 import HomePage from './pages/HomePage'
 import PortfolioPage from './pages/PortfolioPage'
@@ -19,14 +20,6 @@ import AtomsShowcase from './pages/dev/AtomsShowcase'
 import MoleculesShowcase from './pages/dev/MoleculesShowcase'
 import OrganismsShowcase from './pages/dev/OrganismsShowcase'
 
-/**
- * ProtectedRoute – Platzhalter für Auth-Guard.
- * Wird in Phase 2h mit echtem Auth-Context ausgebaut.
- */
-function ProtectedRoute() {
-  // TODO #67 Phase 2h: Auth-Check hier einbauen (redirect to /login wenn nicht eingeloggt)
-  return <Outlet />
-}
 
 const devRoutes = import.meta.env.DEV
   ? [
