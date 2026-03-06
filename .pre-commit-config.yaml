@@ -50,3 +50,24 @@ repos:
         pass_filenames: false
         always_run: false
         files: ^backend/
+
+  # -----------------------------------------------------------
+  # 5. Frontend – TypeScript-Check + ESLint
+  # -----------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: frontend-tsc
+        name: frontend tsc
+        language: system
+        entry: bash -c 'cd frontend && node_modules/.bin/tsc --noEmit'
+        pass_filenames: false
+        always_run: false
+        files: ^frontend/.*\.[tj]sx?$
+
+      - id: frontend-eslint
+        name: frontend eslint
+        language: system
+        entry: bash -c 'cd frontend && node_modules/.bin/eslint src --max-warnings 0'
+        pass_filenames: false
+        always_run: false
+        files: ^frontend/.*\.[tj]sx?$

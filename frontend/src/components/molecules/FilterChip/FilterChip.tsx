@@ -1,5 +1,4 @@
 import Chip from '../../atoms/Chip'
-import { cn } from '../../../lib/utils'
 
 export interface FilterChipProps {
   /** Anzeigetext */

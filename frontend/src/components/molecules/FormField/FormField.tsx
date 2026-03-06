@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 import Text from '../../atoms/Text'
-import Input from '../../atoms/Input'
-import Textarea from '../../atoms/Textarea'
 import { cn } from '../../../lib/utils'
 
 export interface FormFieldProps {
@@ -41,5 +39,3 @@ export default function FormField({ label, error, required, className, children 
     </div>
   )
 }
-
-export { Input, Textarea }
