@@ -21,18 +21,18 @@ Zwei parallele Ziele:
 
 ## Umsetzungsreihenfolge (Übersicht)
 
-| Phase | Inhalt | Abhängigkeit |
-|---|---|---|
-| **2a** | Atomic Design Ordnerstruktur + React Router Setup | – |
-| **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a |
-| **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing | 2b |
-| **2d** | Dark Mode + ThemeToggle | 2b |
-| **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints) | 2c, 2d |
-| **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock) | 2c |
-| **2g** | SEO / Meta-Tags (`react-helmet-async`) | 2c |
-| **2h** | Auth-Flow (Context, Guards, Login/Register) | 2c |
-| **2i** | Chatbot Widget | 2c |
-| **2j** | Storybook + E2E Tests (Playwright) | 2h |
+| Phase | Inhalt                                                       | Abhängigkeit | Tickets |
+|---|--------------------------------------------------------------|---|---------   |
+| **2a** | Atomic Design Ordnerstruktur + React Router Setup     | – | 66-68 ✅ |
+| **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a | ✅ (in 68 umgesetzt) |
+| **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing       | 2b |
+| **2d** | Dark Mode + ThemeToggle                                      | 2b | ✅ (in 2b integriert) |
+| **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints)    | 2c, 2d |
+| **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock)             | 2c |
+| **2g** | SEO / Meta-Tags (`react-helmet-async`)                       | 2c |
+| **2h** | Auth-Flow (Context, Guards, Login/Register)                  | 2c |
+| **2i** | Chatbot Widget                                               | 2c |
+| **2j** | Storybook + E2E Tests (Playwright)                           | 2h |
 
 ---
 
