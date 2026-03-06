@@ -4,6 +4,13 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import './index.css'
 
+// Dark Mode vor dem ersten Render setzen – verhindert hellen Flicker
+const savedTheme = localStorage.getItem('theme')
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+  document.documentElement.classList.add('dark')
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
