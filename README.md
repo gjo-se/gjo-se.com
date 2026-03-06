@@ -20,28 +20,43 @@ Fullstack-Webprojekt mit FastAPI-Backend, React-Frontend und PostgreSQL – cont
 
 ## Quickstart
 
-### A) Mit Docker (empfohlen)
-
 ```bash
 git clone https://github.com/gjo-se/gjo-se.com.git
 cd gjo-se.com
 
-cp .env.example .env          # .env befüllen (DB_PASSWORD setzen)
+cp .env.example .env     # .env befüllen (DB_PASSWORD setzen)
+source scripts/shell/imports.zsh   # Shell-Funktionen laden (einmalig, danach via ~/.zshrc)
 
-start_docker                  # alle Services starten + Migrations automatisch prüfen
-# oder direkt:
-docker compose up --build     # erstes Mal (mit Build)
-docker compose up             # danach (nutzt Layer-Cache)
-
-# Migrations manuell prüfen und einspielen (wird von start_docker automatisch aufgerufen):
-run_migrations                # prüft ob neue Migrations vorhanden sind
-run_migrations --force        # immer ausführen
+start_docker             # Services starten + Migrations automatisch prüfen
 ```
 
-| URL | Service |
-|---|---|
-| http://localhost:8000/api/v1/health | FastAPI Health-Check |
-| http://localhost:3000 | React-Frontend |
+| URL | Service                          |
+|---|----------------------------------|
+| http://localhost:5173 | React-Frontend (Vite Dev-Server) |
+| http://localhost:8000 | FastAPI Backend                  |
+| http://localhost:8000/docs | API Docs (Swagger)               |
+| http://localhost:8000/redoc | ReDocs                           |
+| http://localhost:5173/dev/atoms  | Showcase                    |
+| http://localhost:8000/api/v1/health | Health-Check                     |
+
+---
+
+## Docker-Lifecycle
+
+Docker muss **nicht** nach jeder Arbeitssitzung gestoppt werden – es gibt aber gute Gründe dafür:
+
+| Situation | Empfehlung | Befehl |
+|---|---|---|
+| Kurze Pause (< 1 Tag) | Laufen lassen | – |
+| Feierabend / längere Pause | Stoppen empfohlen | `stop_docker` |
+| Neue `package.json`-Abhängigkeit | Rebuild nötig – wird automatisch erkannt | `start_docker` |
+| Datenbank zurücksetzen | Volumes löschen | `stop_docker --clean` |
+
+```bash
+stop_docker          # Container stoppen (Daten bleiben erhalten)
+start_docker         # neu starten (erkennt automatisch ob Rebuild nötig)
+stop_docker --clean  # Container + Volumes entfernen (DB-Daten weg!)
+```
 
 ### PyCharm – Datenbankverbindung
 
@@ -59,23 +74,6 @@ PostgreSQL läuft im Docker-Container und ist auf `localhost:5432` erreichbar.
 
 > Bei Port-Konflikt mit lokalem PostgreSQL: `"5433:5432"` in `docker-compose.yml` setzen und Port `5433` in PyCharm verwenden.
 
-### B) Ohne Docker (manuell)
-
-```bash
-# Backend
-cd backend
-uv sync
-uv run uvicorn app.main:app --reload
-# → http://localhost:8000
-
-# Frontend (neues Terminal)
-cd frontend
-npm install
-npm run dev
-# → http://localhost:5173
-```
-
-Voraussetzung: PostgreSQL läuft lokal und `DATABASE_URL` in `backend/.env` ist gesetzt.
 
 ---
 
@@ -137,7 +135,9 @@ source ~/path/to/gjo-se.com/scripts/shell/imports.zsh
 
 | Befehl | Beschreibung |
 |---|---|
-| `start_docker` | Docker Compose starten + Migrations automatisch prüfen |
+| `start_docker` | Docker Compose starten + package.json prüfen + Migrations automatisch prüfen |
+| `stop_docker` | Container stoppen, Daten bleiben erhalten (Feierabend) |
+| `stop_docker --clean` | Container + Volumes löschen (DB-Reset) |
 | `run_migrations` | Alembic Migrations prüfen und einspielen (`--force` zum Erzwingen) |
 | `start_be` | FastAPI Dev-Server starten (Port 8000) |
 | `start_fe` | Vite Dev-Server starten (Port 5173) |

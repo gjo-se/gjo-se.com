@@ -127,8 +127,9 @@ function run_migrations() {
 # Nach dem Start werden Migrations automatisch geprüft.
 #
 # Verwendung:
-#   start_docker          # normaler Start
-#   start_docker --build  # Build erzwingen
+#   start_docker            # normaler Start
+#   start_docker --build    # Build erzwingen (mit Layer-Cache)
+#   start_docker --rebuild  # Build ohne Cache erzwingen (nach package-lock-Änderungen)
 #
 # Beispiel:
 #   $ source scripts/shell/dev.zsh
@@ -143,10 +144,53 @@ function start_docker() {
     return 1
   fi
 
-  if [[ "$1" == "--build" ]]; then
+  if [[ "$1" == "--rebuild" ]]; then
+    echo "[start_docker] 🔨 Vollständiger Rebuild – stoppe Container + lösche anonyme Volumes ..."
+    cd "$project_dir" && docker compose down -v
+    echo "[start_docker] 🔨 Baue Images ohne Cache ..."
+    cd "$project_dir" && docker compose build --no-cache && docker compose up -d
+  elif [[ "$1" == "--build" ]]; then
     echo "[start_docker] 🔨 Starte Docker Compose mit --build ..."
     cd "$project_dir" && docker compose up --build -d
   else
+    # --- Automatische package.json-Prüfung ---
+    local pkg_file="$project_dir/frontend/package.json"
+    local lock_file="$project_dir/frontend/package-lock.json"
+    local image_created
+
+    # Erstellungszeit des Frontend-Images ermitteln (leer = kein Image vorhanden)
+    image_created=$(docker image inspect gjo-secom-frontend \
+      --format '{{.Created}}' 2>/dev/null | head -1)
+
+    if [[ -n "$image_created" ]]; then
+      # Image-Zeit in Unix-Timestamp umrechnen
+      local image_ts pkg_ts lock_ts
+      image_ts=$(date -j -f "%Y-%m-%dT%H:%M:%S" "${image_created%%.*}" "+%s" 2>/dev/null \
+                 || date -d "${image_created%%.*}" "+%s" 2>/dev/null || echo "0")
+      pkg_ts=$(stat -f "%m" "$pkg_file" 2>/dev/null \
+               || stat -c "%Y" "$pkg_file" 2>/dev/null || echo "0")
+      lock_ts=$(stat -f "%m" "$lock_file" 2>/dev/null \
+                || stat -c "%Y" "$lock_file" 2>/dev/null || echo "0")
+
+      if [[ "$pkg_ts" -gt "$image_ts" || "$lock_ts" -gt "$image_ts" ]]; then
+        echo ""
+        echo "[start_docker] ⚠️  package.json / package-lock.json sind neuer als das Docker-Image."
+        echo "[start_docker]    Neue npm-Abhängigkeiten fehlen möglicherweise im Container."
+        echo ""
+        echo -n "[start_docker]    Vollständigen Rebuild durchführen? (empfohlen) [Y/n] "
+        read -r answer
+        if [[ "$answer" == "n" || "$answer" == "N" ]]; then
+          echo "[start_docker] ⚠️  Übersprungen – starte mit bestehendem Image."
+        else
+          echo "[start_docker] 🔨 Starte vollständigen Rebuild ..."
+          cd "$project_dir" && docker compose down -v
+          cd "$project_dir" && docker compose build --no-cache && docker compose up -d
+          _start_docker_wait_and_show "$project_dir"
+          return $?
+        fi
+      fi
+    fi
+
     # Prüfen ob Images bereits existieren
     local images
     images=$(docker compose -f "$project_dir/docker-compose.yml" images -q 2>/dev/null)
@@ -158,6 +202,13 @@ function start_docker() {
       cd "$project_dir" && docker compose up -d
     fi
   fi
+
+  _start_docker_wait_and_show "$project_dir"
+}
+
+# Interner Helfer: warten + Migrations + Links ausgeben
+function _start_docker_wait_and_show() {
+  local project_dir="$1"
 
   # Warten bis backend-Container healthy ist
   echo "[start_docker] ⏳ Warte auf backend-Container ..."
@@ -201,4 +252,40 @@ function start_docker() {
     printf "│  Showcase  →  \e]8;;%s/dev/atoms\e\\%s/dev/atoms\e]8;;\e\\%-11s│\n" "$fe_url" "$fe_url" ""
   fi
   echo "└──────────────────────────────────────────────────────┘"
+}
+
+# ------------------------------------------------------------
+# stop_docker — Docker Compose stoppen
+# ------------------------------------------------------------
+# Stoppt alle laufenden Container. Daten (Volumes) bleiben erhalten.
+# Für einen vollständigen Reset (DB löschen): stop_docker --clean
+#
+# Verwendung:
+#   stop_docker          # Container stoppen (Daten bleiben)
+#   stop_docker --clean  # Container + Volumes entfernen (DB weg!)
+#
+# Beispiel:
+#   $ stop_docker        # Feierabend
+#   $ start_docker       # nächster Morgen
+# ------------------------------------------------------------
+function stop_docker() {
+  local project_dir
+  project_dir="$(git rev-parse --show-toplevel)"
+
+  if [[ "$1" == "--clean" ]]; then
+    echo "[stop_docker] 🗑️  Stoppe Container und lösche Volumes (DB-Daten werden gelöscht!) ..."
+    echo -n "[stop_docker]    Bist du sicher? [y/N] "
+    read -r answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+      cd "$project_dir" && docker compose down -v
+      echo "[stop_docker] ✅ Container und Volumes entfernt."
+    else
+      echo "[stop_docker] ↩️  Abgebrochen."
+    fi
+  else
+    echo "[stop_docker] 🛑 Stoppe Docker Container (Daten bleiben erhalten) ..."
+    cd "$project_dir" && docker compose stop
+    echo "[stop_docker] ✅ Alle Container gestoppt."
+    echo "[stop_docker]    Zum Neustart: start_docker"
+  fi
 }
