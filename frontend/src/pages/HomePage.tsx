@@ -24,7 +24,7 @@ const HIGHLIGHT_PROJECTS = [
     tags: ['Docker', 'GitHub Actions', 'pytest'],
     href: '/portfolio',
   },
-] as const
+]
 
 const TEASER_SKILLS = [
   { name: 'React', level: 'expert' as const },
