@@ -59,7 +59,7 @@ repos:
       - id: frontend-tsc
         name: frontend tsc
         language: system
-        entry: bash -c 'cd frontend && node_modules/.bin/tsc --noEmit'
+        entry: bash -c 'cd frontend && node_modules/.bin/tsc -p tsconfig.app.json --noEmit'
         pass_filenames: false
         always_run: false
         files: ^frontend/.*\.[tj]sx?$

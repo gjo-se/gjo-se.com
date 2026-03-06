@@ -21,11 +21,11 @@ Zwei parallele Ziele:
 
 ## Umsetzungsreihenfolge (Übersicht)
 
-| Phase | Inhalt                                                       | Abhängigkeit | Tickets |
-|---|--------------------------------------------------------------|---|---------   |
-| **2a** | Atomic Design Ordnerstruktur + React Router Setup     | – | 66-68 ✅ |
-| **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a | ✅ (in 68 umgesetzt) |
-| **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing       | 2b |
+| Phase | Inhalt                                                       | Abhängigkeit | Tickets              |
+|---|--------------------------------------------------------------|---|----------------------|
+| **2a** | Atomic Design Ordnerstruktur + React Router Setup     | – | #66-68 ✅             |
+| **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a | ✅ (in #68 umgesetzt) |
+| **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing       | 2b | #77                  |
 | **2d** | Dark Mode + ThemeToggle                                      | 2b | ✅ (in 2b integriert) |
 | **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints)    | 2c, 2d |
 | **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock)             | 2c |
