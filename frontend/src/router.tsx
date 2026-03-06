@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import MePage from './pages/MePage'
 import NotFoundPage from './pages/NotFoundPage'
+import ProjectDetailPage from './pages/ProjectDetailPage'
 
 import AtomsShowcase from './pages/dev/AtomsShowcase'
 import MoleculesShowcase from './pages/dev/MoleculesShowcase'
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/portfolio', element: <PortfolioPage /> },
+      { path: '/portfolio/:slug', element: <ProjectDetailPage /> },
       { path: '/tech-stack', element: <TechStackPage /> },
       { path: '/about', element: <AboutPage /> },
       { path: '/impressum', element: <ImpressumPage /> },

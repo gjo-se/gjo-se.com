@@ -16,6 +16,8 @@ import Textarea from '../../components/atoms/Textarea'
 import Checkbox from '../../components/atoms/Checkbox'
 import Tooltip from '../../components/atoms/Tooltip'
 import Chip from '../../components/atoms/Chip'
+import CodeBlock from '../../components/atoms/CodeBlock'
+import DiagramSlot from '../../components/atoms/DiagramSlot'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -389,6 +391,46 @@ export default function AtomsShowcase() {
         />
         <Chip label="Entfernbar" onRemove={() => {}} />
         <Chip label="Deaktiviert" disabled />
+      </Section>
+
+      <Section
+        title="CodeBlock"
+        description="Syntax-Highlighting mit Copy-Button"
+        propsRows={[
+          { prop: 'code', type: 'string', default: '–', description: 'Quellcode' },
+          { prop: 'language', type: 'string', default: '–', description: 'Sprache für Highlighting' },
+          { prop: 'filename', type: 'string', default: 'language', description: 'Dateiname in Kopfzeile' },
+        ]}
+      >
+        <div className="w-full">
+          <CodeBlock
+            code={`import { useState } from 'react'\n\nexport function Counter() {\n  const [count, setCount] = useState(0)\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>\n}`}
+            language="typescript"
+            filename="Counter.tsx"
+          />
+        </div>
+        <div className="w-full">
+          <CodeBlock
+            code={`@router.get("/health")\nasync def health_check() -> dict[str, str]:\n    return {"status": "ok"}`}
+            language="python"
+            filename="health.py"
+          />
+        </div>
+      </Section>
+
+      <Section
+        title="DiagramSlot"
+        description="Bild/Diagramm-Platzhalter mit Caption"
+        propsRows={[
+          { prop: 'src', type: 'string', default: 'undefined', description: 'Bild-URL – ohne src wird Platzhalter gezeigt' },
+          { prop: 'alt', type: 'string', default: '"Diagramm"', description: 'Alt-Text' },
+          { prop: 'caption', type: 'string', default: '–', description: 'Beschriftung unter dem Diagramm' },
+          { prop: 'aspectRatio', type: '"16/9" | "4/3" | "1/1"', default: '"16/9"', description: 'Seitenverhältnis' },
+        ]}
+      >
+        <DiagramSlot caption="16/9 Platzhalter" aspectRatio="16/9" className="max-w-md" />
+        <DiagramSlot caption="4/3 Platzhalter" aspectRatio="4/3" className="max-w-xs" />
+        <DiagramSlot caption="1/1 Platzhalter" aspectRatio="1/1" className="max-w-xs" />
       </Section>
     </div>
   )

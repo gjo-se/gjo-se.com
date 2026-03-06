@@ -30,6 +30,11 @@ source scripts/shell/imports.zsh   # Shell-Funktionen laden (einmalig, danach vi
 start_docker             # Services starten + Migrations automatisch prüfen
 ```
 
+> **⚠️ Nach `npm install <paket>` (neue Abhängigkeit):**
+> `start_docker` erkennt Änderungen an `package-lock.json` beim nächsten Start automatisch.
+> Wenn Docker **bereits läuft**: `stop_docker` → `start_docker` – der laufende Container
+> kennt das neue Package nicht, da `node_modules` im anonymen Volume gecached ist.
+
 | URL | Service                          |
 |---|----------------------------------|
 | http://localhost:5173 | React-Frontend (Vite Dev-Server) |
