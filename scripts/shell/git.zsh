@@ -113,7 +113,7 @@ gf_merge() {
 
   branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName')
 
-  gh pr merge "$pr" --squash --delete-branch \
+  gh pr merge "$pr" --squash --delete-branch --auto\
     && git checkout develop \
     && git pull \
     && git branch -d "$branch" 2>/dev/null \
