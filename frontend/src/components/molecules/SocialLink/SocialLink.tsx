@@ -1,5 +1,7 @@
-import { Github, Linkedin, Mail, Globe } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import type React from 'react'
+import { Mail, Globe } from 'lucide-react'
+import GitHubIcon from '../../atoms/GitHubIcon'
+import LinkedInIcon from '../../atoms/LinkedInIcon'
 import Link from '../../atoms/Link'
 import { cn } from '../../../lib/utils'
 
@@ -17,12 +19,15 @@ export interface SocialLinkProps {
   className?: string
 }
 
-const platformConfig: Record<SocialPlatform, { icon: LucideIcon; defaultLabel: string }> = {
-  github:   { icon: Github,   defaultLabel: 'GitHub' },
-  linkedin: { icon: Linkedin, defaultLabel: 'LinkedIn' },
-  xing:     { icon: Globe,    defaultLabel: 'XING' },
-  mail:     { icon: Mail,     defaultLabel: 'E-Mail' },
-  website:  { icon: Globe,    defaultLabel: 'Website' },
+/** Gemeinsamer Typ für LucideIcon und eigene SVG-Icons */
+type IconComponent = React.ComponentType<{ size?: number; className?: string; 'aria-hidden'?: boolean | 'true' | 'false' }>
+
+const platformConfig: Record<SocialPlatform, { icon: IconComponent; defaultLabel: string }> = {
+  github:   { icon: GitHubIcon, defaultLabel: 'GitHub' },
+  linkedin: { icon: LinkedInIcon, defaultLabel: 'LinkedIn' },
+  xing:     { icon: Globe,      defaultLabel: 'XING' },
+  mail:     { icon: Mail,       defaultLabel: 'E-Mail' },
+  website:  { icon: Globe,      defaultLabel: 'Website' },
 }
 
 /**

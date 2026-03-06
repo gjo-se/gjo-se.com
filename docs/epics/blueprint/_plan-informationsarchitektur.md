@@ -27,8 +27,8 @@ Zwei parallele Ziele:
 | **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a | ✅ (in #68 umgesetzt) |
 | **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing       | 2b | #77                  |
 | **2d** | Dark Mode + ThemeToggle                                      | 2b | ✅ (in 2b integriert) |
-| **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints)    | 2c, 2d |
-| **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock)             | 2c |
+| **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints)    | 2c, 2d | ✅ (geprüft + HeroSection nachgebessert) |
+| **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock) + Detailseiten alle 6 Projekte | 2c | #80 |
 | **2g** | SEO / Meta-Tags (`react-helmet-async`)                       | 2c |
 | **2h** | Auth-Flow (Context, Guards, Login/Register)                  | 2c |
 | **2i** | Chatbot Widget                                               | 2c |
