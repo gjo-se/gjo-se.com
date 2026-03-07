@@ -95,25 +95,29 @@ function run_migrations() {
     return $?
   fi
 
-  # Aktuelle DB-Revision ermitteln
+  # Aktuelle DB-Revision ermitteln – alembic current gibt z.B. "0002 (head)" aus
   local current_rev
-  current_rev=$(cd "$project_dir" && docker compose exec -T backend alembic current 2>/dev/null | grep -oE '[a-f0-9]{12}' | head -1)
+  current_rev=$(cd "$project_dir" && docker compose exec -T backend alembic current 2>/dev/null \
+    | grep -v '^$' | awk '{print $1}' | head -1)
 
-  # Neueste Revision aus den Versions-Dateien ermitteln
+  # Neueste Revision aus den Versions-Dateien ermitteln (numerisch oder hex)
+  # Dateien sortiert nach Name, letzte = neueste Migration (0001, 0002, ...)
   local latest_file
-  latest_file=$(ls -t "$project_dir/backend/alembic/versions/"*.py 2>/dev/null | head -1)
+  latest_file=$(find "$project_dir/backend/alembic/versions" -maxdepth 1 -name "[^_]*.py" | sort | tail -1)
   local latest_rev
-  latest_rev=$(grep -oE "revision: str = '[a-f0-9]+'" "$latest_file" 2>/dev/null | grep -oE '[a-f0-9]+' | head -1)
+  latest_rev=$(grep -oE "^revision: str = ['\"][a-zA-Z0-9_]+['\"]" "$latest_file" 2>/dev/null | grep -oE "['\"][a-zA-Z0-9_]+['\"]" | tr -d "'\"")
 
   if [[ -z "$latest_rev" ]]; then
     echo "[run_migrations] ℹ️  Keine Migrations-Dateien gefunden – übersprungen."
     return 0
   fi
 
+  echo "[run_migrations] 🔍 DB-Revision: ${current_rev:-<leer>}  |  Neueste: $latest_rev"
+
   if [[ "$current_rev" == "$latest_rev" ]]; then
     echo "[run_migrations] ✅ DB ist aktuell (revision: $current_rev) – keine Migration nötig."
   else
-    echo "[run_migrations] 🗄️  Neue Migrations gefunden (DB: ${current_rev:-leer} → $latest_rev) ..."
+    echo "[run_migrations] 🗄️  Neue Migrations gefunden (DB: ${current_rev:-leer} → $latest_rev) – führe upgrade head aus ..."
     cd "$project_dir" && docker compose exec backend alembic upgrade head
   fi
 }
@@ -124,12 +128,15 @@ function run_migrations() {
 # Startet alle Services via Docker Compose.
 # Beim ersten Aufruf (kein Image vorhanden) wird --build gesetzt,
 # danach startet es ohne Rebuild (nutzt Layer-Cache).
-# Nach dem Start werden Migrations automatisch geprüft.
+# Nach dem Start werden Migrations automatisch geprüft und eingespielt.
+#
+# DB-Daten (Postgres Volume) bleiben bei JEDEM Start erhalten.
+# Nur stop_docker --clean löscht die DB explizit.
 #
 # Verwendung:
 #   start_docker            # normaler Start
-#   start_docker --build    # Build erzwingen (mit Layer-Cache)
-#   start_docker --rebuild  # Build ohne Cache erzwingen (nach package-lock-Änderungen)
+#   start_docker --build    # Build erzwingen (mit Layer-Cache, DB bleibt)
+#   start_docker --rebuild  # Build ohne Cache (nach package-lock-Änderungen, DB bleibt)
 #
 # Beispiel:
 #   $ source scripts/shell/dev.zsh
@@ -145,9 +152,10 @@ function start_docker() {
   fi
 
   if [[ "$1" == "--rebuild" ]]; then
-    echo "[start_docker] 🔨 Vollständiger Rebuild – stoppe Container + lösche anonyme Volumes ..."
-    cd "$project_dir" && docker compose down -v
+    echo "[start_docker] 🔨 Vollständiger Rebuild – stoppe Container (DB-Daten bleiben erhalten!) ..."
+    cd "$project_dir" && docker compose down
     echo "[start_docker] 🔨 Baue Images ohne Cache ..."
+    cd "$project_dir" && docker compose build --no-cache && docker compose up -d
     cd "$project_dir" && docker compose build --no-cache && docker compose up -d
   elif [[ "$1" == "--build" ]]; then
     echo "[start_docker] 🔨 Starte Docker Compose mit --build ..."
@@ -182,8 +190,8 @@ function start_docker() {
         if [[ "$answer" == "n" || "$answer" == "N" ]]; then
           echo "[start_docker] ⚠️  Übersprungen – starte mit bestehendem Image."
         else
-          echo "[start_docker] 🔨 Starte vollständigen Rebuild ..."
-          cd "$project_dir" && docker compose down -v
+          echo "[start_docker] 🔨 Starte vollständigen Rebuild (DB-Daten bleiben erhalten) ..."
+          cd "$project_dir" && docker compose down
           cd "$project_dir" && docker compose build --no-cache && docker compose up -d
           _start_docker_wait_and_show "$project_dir"
           return $?

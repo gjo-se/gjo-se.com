@@ -139,11 +139,11 @@ export default function OrganismsShowcase() {
         <div className="grid gap-6 p-4 md:grid-cols-2">
           <div>
             <p className="mb-2 text-xs text-gray-400">mode: login</p>
-            <AuthForm mode="login" onSubmit={() => {}} />
+            <AuthForm mode="login" onSuccess={() => {}} />
           </div>
           <div>
             <p className="mb-2 text-xs text-gray-400">mode: register</p>
-            <AuthForm mode="register" onSubmit={() => {}} />
+            <AuthForm mode="register" onSuccess={() => {}} />
           </div>
         </div>
       </OrgSection>
