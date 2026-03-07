@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import DefaultLayout from './components/templates/DefaultLayout'
 import AuthLayout from './components/templates/AuthLayout'
 import DevLayout from './components/templates/DevLayout'
-import ProtectedRoute from './components/ProtectedRoute'
+import { ProtectedRoute } from './features/auth'
 
 import HomePage from './pages/HomePage'
 import PortfolioPage from './pages/PortfolioPage'
