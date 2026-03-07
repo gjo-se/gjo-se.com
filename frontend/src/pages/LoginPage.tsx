@@ -1,15 +1,19 @@
+import { useNavigate } from 'react-router-dom'
 import SEOMeta from '../components/atoms/SEOMeta'
+import AuthForm from '../components/organisms/AuthForm'
 
 /**
- * LoginPage – Platzhalter-Seite.
- * Wird in Phase 2c mit Inhalt befüllt.
+ * LoginPage – Anmeldeseite mit AuthForm.
+ * Wird über AuthLayout im Router eingebunden.
+ * Nach erfolgreichem Login: Redirect zu /me.
  */
 export default function LoginPage() {
+  const navigate = useNavigate()
+
   return (
-    <div className="py-8">
-      <SEOMeta title="Login" description="Anmelden bei gjo-se.com." />
-      <h1 className="text-2xl font-semibold text-gray-800">Login</h1>
-      <p className="mt-2 text-sm text-gray-400">Inhalt folgt in Phase 2c.</p>
-    </div>
+    <>
+      <SEOMeta title="Anmelden" description="Melde dich bei gjo-se.com an." />
+      <AuthForm mode="login" onSuccess={() => navigate('/me')} />
+    </>
   )
 }

@@ -1,9 +1,11 @@
 import { Menu } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import NavLink from '../../molecules/NavLink'
 import ThemeToggle from '../../molecules/ThemeToggle'
 import Button from '../../atoms/Button'
 import Text from '../../atoms/Text'
 import { cn } from '../../../lib/utils'
+import { useAuth } from '../../../features/auth'
 
 export interface HeaderNavItem {
   label: string
@@ -26,8 +28,7 @@ export interface HeaderProps {
 }
 
 /**
- * Header – Haupt-Navigation mit Logo, NavLinks und ThemeToggle.
- * Wird in Phase 2b mit MobileNav und Auth-Status ausgebaut.
+ * Header – Haupt-Navigation mit Logo, NavLinks, ThemeToggle und Auth-Status.
  *
  * @example
  * <Header logo="gjo-se.com" navItems={[{ label: 'Portfolio', to: '/portfolio' }]} />
@@ -40,6 +41,14 @@ export default function Header({
   onMenuOpen,
   className,
 }: HeaderProps) {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
   return (
     <header
       className={cn(
@@ -65,6 +74,19 @@ export default function Header({
           {onThemeToggle && (
             <ThemeToggle isDark={isDark} onToggle={onThemeToggle} />
           )}
+
+          {/* Auth-Status */}
+          {user !== null ? (
+            <>
+              <NavLink to="/me" label="Dashboard" />
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                Abmelden
+              </Button>
+            </>
+          ) : (
+            <NavLink to="/login" label="Anmelden" />
+          )}
+
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
