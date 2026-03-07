@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from app.auth.models import User  # noqa: F401 – registers User for Base.metadata
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app

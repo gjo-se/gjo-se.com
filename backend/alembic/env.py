@@ -10,6 +10,7 @@ from logging.config import fileConfig
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
+from app.auth.models import User  # noqa: F401 – registers User for autogenerate
 from app.core.config import settings
 from app.db.base import Base  # noqa: F401 – triggers model registration
 

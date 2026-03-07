@@ -17,6 +17,7 @@
 ### Kommunikation
 - Ich antworte immer auf Deutsch
 - Ich liefere immer eine kurze Erklärung zu meinen Implementierungsentscheidungen
+- Wenn ich die Ausgabe des Terminals nicht lesen kann, bitte ich den PM um eine Kopie der Ausgabe
 
 ### Qualitätsanspruch
 - Jede meiner Implementierungen ist mit Unit Tests abgedeckt
