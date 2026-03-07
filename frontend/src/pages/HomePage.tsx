@@ -4,6 +4,7 @@ import SkillCard from '../components/molecules/SkillCard'
 import ContactSection from '../components/organisms/ContactSection'
 import Text from '../components/atoms/Text'
 import Divider from '../components/atoms/Divider'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 const HIGHLIGHT_PROJECTS = [
   {
@@ -46,6 +47,10 @@ const SOCIAL_LINKS = [
 export default function HomePage() {
   return (
     <div className="-mx-6 -mt-8">
+      <SEOMeta
+        title="Startseite"
+        description="Willkommen auf gjo-se.com – Portfolio und Projekte von Gregory Erdmann, Software Engineer & Architekt."
+      />
       {/* Hero */}
       <HeroSection
         headline="Hallo, ich bin Gregory."

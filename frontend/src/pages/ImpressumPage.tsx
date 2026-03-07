@@ -1,5 +1,6 @@
 import PageHeader from '../components/organisms/PageHeader'
 import Text from '../components/atoms/Text'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 /**
  * ImpressumPage – Rechtliche Angaben (Platzhalter).
@@ -7,6 +8,10 @@ import Text from '../components/atoms/Text'
 export default function ImpressumPage() {
   return (
     <div>
+      <SEOMeta
+        title="Impressum"
+        description="Rechtliche Angaben gemäß § 5 TMG."
+      />
       <PageHeader
         title="Impressum"
         breadcrumbs={[{ label: 'Home', to: '/' }, { label: 'Impressum' }]}
