@@ -3,6 +3,7 @@ import SkillGrid from '../components/organisms/SkillGrid'
 import type { SkillCardProps } from '../components/molecules/SkillCard'
 import Divider from '../components/atoms/Divider'
 import Text from '../components/atoms/Text'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 const FRONTEND_SKILLS: SkillCardProps[] = [
   { name: 'React', level: 'expert' },
@@ -33,6 +34,10 @@ const INFRA_SKILLS: SkillCardProps[] = [
 export default function TechStackPage() {
   return (
     <div>
+      <SEOMeta
+        title="Tech Stack"
+        description="Mein technisches Skillset: Backend, Frontend, DevOps und mehr."
+      />
       <PageHeader
         title="Tech Stack"
         subtitle="Die Technologien und Tools die ich einsetze – kategorisiert nach Bereich."

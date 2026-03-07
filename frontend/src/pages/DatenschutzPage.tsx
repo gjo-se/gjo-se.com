@@ -1,6 +1,7 @@
 import PageHeader from '../components/organisms/PageHeader'
 import Text from '../components/atoms/Text'
 import Divider from '../components/atoms/Divider'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 /**
  * DatenschutzPage – Datenschutzerklärung (Platzhalter).
@@ -8,6 +9,10 @@ import Divider from '../components/atoms/Divider'
 export default function DatenschutzPage() {
   return (
     <div>
+      <SEOMeta
+        title="Datenschutz"
+        description="Datenschutzerklärung gemäß DSGVO."
+      />
       <PageHeader
         title="Datenschutzerklärung"
         breadcrumbs={[{ label: 'Home', to: '/' }, { label: 'Datenschutz' }]}

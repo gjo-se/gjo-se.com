@@ -18,6 +18,7 @@ import Tooltip from '../../components/atoms/Tooltip'
 import Chip from '../../components/atoms/Chip'
 import CodeBlock from '../../components/atoms/CodeBlock'
 import DiagramSlot from '../../components/atoms/DiagramSlot'
+import SEOMeta from '../../components/atoms/SEOMeta'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -431,6 +432,24 @@ export default function AtomsShowcase() {
         <DiagramSlot caption="16/9 Platzhalter" aspectRatio="16/9" className="max-w-md" />
         <DiagramSlot caption="4/3 Platzhalter" aspectRatio="4/3" className="max-w-xs" />
         <DiagramSlot caption="1/1 Platzhalter" aspectRatio="1/1" className="max-w-xs" />
+      </Section>
+
+      <Section
+        title="SEOMeta"
+        description="Setzt <title>, <meta name='description'>, Open Graph und Twitter Card Tags via react-helmet-async. Kein visuelles Rendering."
+        propsRows={[
+          { prop: 'title', type: 'string', default: '–', description: 'Seitenspezifischer Titel – wird zu "{title} | gjo-se.com" formatiert (Pflicht)' },
+          { prop: 'description', type: 'string', default: '–', description: 'Kurzbeschreibung der Seite, max. 160 Zeichen empfohlen (Pflicht)' },
+          { prop: 'ogImage', type: 'string', default: 'undefined', description: 'Optionales Open-Graph-Bild (absolute URL)' },
+          { prop: 'ogType', type: 'string', default: '"website"', description: 'Open-Graph-Typ' },
+        ]}
+      >
+        <div className="rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-sm text-gray-500">
+          <p className="font-medium text-gray-700">SEOMeta – kein visuelles Rendering</p>
+          <p className="mt-1">Schreibt Tags in den <code className="rounded bg-gray-200 px-1">&lt;head&gt;</code> des Dokuments.</p>
+          <p className="mt-1 font-mono text-xs text-blue-700">{'<SEOMeta title="Startseite" description="..." />'}</p>
+          <SEOMeta title="Atoms Dev-Showcase" description="Übersicht aller Atom-Komponenten für gjo-se.com." />
+        </div>
       </Section>
     </div>
   )

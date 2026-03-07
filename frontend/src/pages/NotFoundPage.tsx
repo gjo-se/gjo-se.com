@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/atoms/Button'
 import Text from '../components/atoms/Text'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 /**
  * NotFoundPage – 404-Seite mit sprechender Fehlermeldung und Link zur Startseite.
@@ -10,6 +11,7 @@ export default function NotFoundPage() {
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
+      <SEOMeta title="Seite nicht gefunden" description="Diese Seite existiert leider nicht." />
       <Text as="h1" variant="heading" weight="bold" className="text-7xl text-gray-200">
         404
       </Text>

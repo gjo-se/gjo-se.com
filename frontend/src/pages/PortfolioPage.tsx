@@ -1,6 +1,7 @@
 import PageHeader from '../components/organisms/PageHeader'
 import ProjectGrid from '../components/organisms/ProjectGrid'
 import type { ProjectCardProps } from '../components/molecules/ProjectCard'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 const MOCK_PROJECTS: ProjectCardProps[] = [
 	{
@@ -54,6 +55,10 @@ const FILTERS = ['React', 'Vue', 'Python', 'Docker', 'TypeScript']
 export default function PortfolioPage() {
 	return (
 		<div>
+			<SEOMeta
+				title="Portfolio"
+				description="Alle Projekte im Überblick – von Web-Apps bis Infrastruktur."
+			/>
 			<PageHeader
 				title="Portfolio"
 				subtitle="Ausgewählte Projekte und Fallstudien aus meiner Arbeit als Senior Developer."

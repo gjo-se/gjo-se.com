@@ -6,6 +6,7 @@ import Text from '../components/atoms/Text'
 import Divider from '../components/atoms/Divider'
 import type { TimelineItemProps } from '../components/molecules/TimelineItem'
 import { Download } from 'lucide-react'
+import SEOMeta from '../components/atoms/SEOMeta'
 
 const CV_TIMELINE: TimelineItemProps[] = [
 	{
@@ -42,6 +43,10 @@ const CV_TIMELINE: TimelineItemProps[] = [
 export default function AboutPage() {
 	return (
 		<div>
+			<SEOMeta
+				title="Über mich"
+				description="Gregory Erdmann – Software Engineer, Architekt und Fullstack-Entwickler."
+			/>
 			<PageHeader
 				title="About / CV"
 				subtitle="Senior Developer & Software Architect mit über 10 Jahren Erfahrung."
