@@ -18,8 +18,10 @@ depends_on: str | Sequence[str] | None = ${repr(depends_on)}
 
 
 def upgrade() -> None:
+    ## ...existing code...
     ${upgrades if upgrades else "pass"}
 
 
 def downgrade() -> None:
+    ## ...existing code...
     ${downgrades if downgrades else "pass"}
