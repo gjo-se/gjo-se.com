@@ -110,7 +110,7 @@ gjo-se.com/
 │   ├── research/             ← Technologie-Recherchen
 │   ├── roles/                ← Rollen-Definitionen (SAM, REX, ARI ...)
 │   └── runbooks/             ← Git-Workflow, GitHub Projects, Sourcetree
-├── scripts/shell/            ← Shell-Funktionen (gf_task, start_be ...)
+├── scripts/shell/            ← Shell-Funktionen (gf_task, start_docker ...)
 ├── docker-compose.yml        ← Produktions-Konfiguration
 ├── docker-compose.override.yml ← Dev-Overrides (Hot-Reload)
 └── .env.example              ← Template für Umgebungsvariablen
@@ -144,8 +144,6 @@ source ~/path/to/gjo-se.com/scripts/shell/imports.zsh
 | `stop_docker` | Container stoppen, Daten bleiben erhalten (Feierabend) |
 | `stop_docker --clean` | Container + Volumes löschen (DB-Reset) |
 | `run_migrations` | Alembic Migrations prüfen und einspielen (`--force` zum Erzwingen) |
-| `start_be` | FastAPI Dev-Server starten (Port 8000) |
-| `start_fe` | Vite Dev-Server starten (Port 5173) |
 | `gf_task <nr>` | Feature-Branch + Commit + Push + PR in einem Schritt |
 | `gf_merge <pr-nr>` | PR mergen + Branch aufräumen |
 | `gf_cleanup` | Alle gemergten lokalen Branches löschen |
