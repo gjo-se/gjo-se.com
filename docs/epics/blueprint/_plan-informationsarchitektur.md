@@ -21,18 +21,17 @@ Zwei parallele Ziele:
 
 ## Umsetzungsreihenfolge (Übersicht)
 
-| Phase | Inhalt                                                       | Abhängigkeit | Tickets              |
-|---|--------------------------------------------------------------|---|----------------------|
+| Phase  | Inhalt                                                       | Abhängigkeit | Tickets              |
+|--------|--------------------------------------------------------------|---|----------------------|
 | **2a** | Atomic Design Ordnerstruktur + React Router Setup     | – | #66-68 ✅             |
 | **2b** | DefaultLayout: Header, Footer, Navigation (Desktop + Mobile) | 2a | ✅ (in #68 umgesetzt) |
 | **2c** | Alle Seiten als leere Shells mit Lorem Ipsum + Routing       | 2b | #77                  |
 | **2d** | Dark Mode + ThemeToggle                                      | 2b | ✅ (in 2b integriert) |
 | **2e** | Responsive Design prüfen (Mobile-First, alle Breakpoints)    | 2c, 2d | ✅ (geprüft + HeroSection nachgebessert) |
 | **2f** | Projekt-Detail-Template (DiagramSlot, CodeBlock) + Detailseiten alle 6 Projekte | 2c | #80 |
-| **2g** | SEO / Meta-Tags (`react-helmet-async`)                       | 2c |
+| **2g** | SEO / Meta-Tags (`react-helmet-async`)                       | 2c | #82 |
 | **2h** | Auth-Flow (Context, Guards, Login/Register)                  | 2c |
-| **2i** | Chatbot Widget                                               | 2c |
-| **2j** | Storybook + E2E Tests (Playwright)                           | 2h |
+| **2i** | Storybook + E2E Tests (Playwright)                           | 2h |
 
 ---
 
@@ -97,7 +96,6 @@ src/
 │   │   ├── ContactSection/ ← neu
 │   │   ├── PageHeader/  ← neu
 │   │   ├── ErrorBoundary/ ← neu
-│   │   ├── ChatbotWidget/ ← neu (Phase 2i)
 │   │   └── CookieBanner/ ← neu
 │   └── templates/       ← Seitenlayouts (ohne Inhalt)
 │       ├── DefaultLayout/
@@ -357,20 +355,7 @@ Fehlermeldung + Link → Home
 
 ---
 
-## Phase 2i – Chatbot Widget
-
-**Abhängigkeit:** 2c
-
-| Variante | Aufwand | Beschreibung |
-|---|---|---|
-| **A) Embedded Widget** | gering | Drittanbieter (z.B. Crisp, Tawk.to) als Script eingebunden |
-| **B) Custom LLM-Bot** | hoch | Eigener Endpoint (`POST /api/v1/chat`), OpenAI/Ollama |
-
-Bausatz-Komponente: `ChatbotWidget` (Floating Button + Slide-in Panel, unabhängig von Variante).
-
----
-
-## Phase 2j – Storybook + E2E Tests (Playwright)
+## Phase 2i – Storybook + E2E Tests (Playwright)
 
 **Abhängigkeit:** 2h
 
